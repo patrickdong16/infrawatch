@@ -12,7 +12,11 @@ from datetime import datetime
 # 添加路径
 sys.path.insert(0, '.')
 
-from spiders import OpenAISpider, AnthropicSpider, LambdaLabsSpider
+from spiders import (
+    OpenAISpider, AnthropicSpider, LambdaLabsSpider,
+    DeepSeekSpider, QwenSpider, MiniMaxSpider,
+    AWSSpider, AzureSpider, GCPSpider
+)
 
 
 async def test_spider(spider_class, name: str):
@@ -34,7 +38,9 @@ async def test_spider(spider_class, name: str):
         if results:
             print(f"\n   示例数据 (前3条):")
             for i, item in enumerate(results[:3]):
-                print(f"   {i+1}. {item.get('sku_id')}: ${item.get('price')} ({item.get('price_type', 'default')})")
+                # 支持 API 定价和 GPU 小时价
+                price = item.get('price') or item.get('hourly_rate')
+                print(f"   {i+1}. {item.get('sku_id')}: ${price} ({item.get('price_type', 'default')})")
         
         return {"name": name, "success": True, "count": len(results), "elapsed": elapsed, "data": results}
         
@@ -51,9 +57,17 @@ async def main():
     print("="*60)
     
     spiders = [
+        # B板块：大模型 API
         (OpenAISpider, "OpenAI 定价"),
         (AnthropicSpider, "Anthropic 定价"),
-        (LambdaLabsSpider, "Lambda Labs GPU云"),
+        (DeepSeekSpider, "DeepSeek 定价"),
+        (QwenSpider, "通义千问 定价"),
+        (MiniMaxSpider, "MiniMax 定价"),
+        # C板块：GPU 租赁
+        (LambdaLabsSpider, "Lambda Labs GPU"),
+        (AWSSpider, "AWS GPU"),
+        (AzureSpider, "Azure GPU"),
+        (GCPSpider, "GCP GPU"),
     ]
     
     results = []

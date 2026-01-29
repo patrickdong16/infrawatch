@@ -24,14 +24,26 @@ _cache = {
 
 async def get_spider_data():
     """获取所有爬虫数据"""
-    from spiders import OpenAISpider, AnthropicSpider, LambdaLabsSpider
+    from spiders import (
+        OpenAISpider, AnthropicSpider, LambdaLabsSpider,
+        DeepSeekSpider, QwenSpider, MiniMaxSpider,
+        AWSSpider, AzureSpider, GCPSpider
+    )
     
     all_data = []
     
     spiders = [
+        # B板块：大模型 API
         ("openai", OpenAISpider()),
         ("anthropic", AnthropicSpider()),
+        ("deepseek", DeepSeekSpider()),
+        ("qwen", QwenSpider()),
+        ("minimax", MiniMaxSpider()),
+        # C板块：GPU 租赁
         ("lambda_labs", LambdaLabsSpider()),
+        ("aws", AWSSpider()),
+        ("azure", AzureSpider()),
+        ("gcp", GCPSpider()),
     ]
     
     for provider, spider in spiders:
@@ -64,15 +76,9 @@ async def list_prices():
     if _cache["prices"] is None:
         _cache["prices"] = await get_spider_data()
     
-    # 添加模拟趋势数据
-    import random
-    prices_with_trends = []
-    for item in _cache["prices"]:
-        item_copy = item.copy()
-        item_copy["weekOverWeek"] = round(random.uniform(-10, 5), 1)
-        item_copy["monthOverMonth"] = round(random.uniform(-15, 8), 1)
-        item_copy["yearOverYear"] = round(random.uniform(-50, -20), 1)  # 年同比
-        prices_with_trends.append(item_copy)
+    # 使用数据库计算真实趋势数据
+    from app.repositories.price_history import save_and_enrich_prices
+    prices_with_trends = save_and_enrich_prices(_cache["prices"])
     
     return {
         "success": True,
@@ -182,10 +188,73 @@ async def get_summary():
             "providers": {
                 "openai": len([p for p in prices if p.get("provider") == "openai"]),
                 "anthropic": len([p for p in prices if p.get("provider") == "anthropic"]),
+                "deepseek": len([p for p in prices if p.get("provider") == "deepseek"]),
+                "qwen": len([p for p in prices if p.get("provider") == "qwen"]),
+                "minimax": len([p for p in prices if p.get("provider") == "minimax"]),
                 "lambda_labs": len([p for p in prices if p.get("provider") == "lambda_labs"]),
+                "aws": len([p for p in prices if p.get("provider") == "aws"]),
+                "azure": len([p for p in prices if p.get("provider") == "azure"]),
+                "gcp": len([p for p in prices if p.get("provider") == "gcp"]),
             },
             "last_updated": __import__("datetime").datetime.now().isoformat(),
         },
+    }
+
+
+@router.get("/stage/current")
+async def get_current_stage():
+    """
+    获取当前阶段判定
+    
+    基于 StageEngine 计算当前 S0-S3 阶段
+    """
+    from app.domain.stage_engine import StageEngine, StageMetrics
+    
+    engine = StageEngine()
+    
+    # 使用实际数据或模拟数据计算阶段
+    # 在 MVP 阶段使用默认指标
+    metrics = StageMetrics(
+        m01_low=0.24,
+        m01_high=0.36,
+        b_qoq_deflation=0.12,  # 12% 季度通缩
+        c_spot_discount=0.15,  # 15% spot 折扣
+        c_rental_qoq=-0.08,
+        a_growth_streak=2,
+        d3_margin_qoq=0.02,
+        e_supply_tightness=0.6,
+    )
+    
+    result = engine.determine(metrics)
+    
+    return {
+        "success": True,
+        "data": {
+            "stage": result.stage.value,
+            "confidence": result.confidence.value,
+            "rationale": result.rationale,
+            "trigger_conditions": result.trigger_conditions,
+            "transition_risks": result.transition_risks,
+            "metrics_snapshot": result.metrics_snapshot,
+            "determined_at": result.determined_at.isoformat(),
+        },
+    }
+
+
+@router.get("/signals")
+async def list_signals():
+    """
+    获取最近的信号列表
+    """
+    from app.domain.signal_detector import get_detector
+    
+    detector = get_detector()
+    signals = detector.get_recent_signals(limit=20)
+    
+    return {
+        "success": True,
+        "data": [detector.to_dict(s) for s in signals],
+        "total": len(signals),
     }
 
 

@@ -71,6 +71,7 @@ export default function DashboardPage() {
                   weekOverWeek={metric.weekOverWeek}
                   monthOverMonth={metric.monthOverMonth}
                   yearOverYear={metric.yearOverYear}
+                  showChart={true}
                 />
               )) || (
                   <>
@@ -80,6 +81,7 @@ export default function DashboardPage() {
                       status="warning"
                       description="过渡期"
                       weekOverWeek={8}
+                      showChart={true}
                     />
                     <MetricCard
                       title="B板块价格指数"
@@ -88,6 +90,7 @@ export default function DashboardPage() {
                       status="good"
                       weekOverWeek={-5.2}
                       monthOverMonth={-8.5}
+                      showChart={true}
                     />
                     <MetricCard
                       title="C板块价格指数"
@@ -96,6 +99,7 @@ export default function DashboardPage() {
                       status="neutral"
                       weekOverWeek={-2.1}
                       monthOverMonth={-4.0}
+                      showChart={true}
                     />
                   </>
                 )}

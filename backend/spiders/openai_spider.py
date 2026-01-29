@@ -126,34 +126,18 @@ class OpenAISpider(BaseSpider):
     
     def _get_fallback_prices(self) -> List[Dict[str, Any]]:
         """
-        后备价格数据
+        后备价格数据 - 更新至 2026 精简模型列表
         
-        注意: 这些是示例价格，实际使用时需要从页面获取
         价格单位: 每百万tokens ($/1M tokens)
+        每家只保留2个代表模型
         """
-        # 2024年价格参考
         prices = [
-            # GPT-4o
+            # GPT-4o (旗舰模型)
             {"sku_id": "gpt-4o", "price": 2.50, "price_type": "input"},
             {"sku_id": "gpt-4o", "price": 10.00, "price_type": "output"},
-            # GPT-4o-mini
-            {"sku_id": "gpt-4o-mini", "price": 0.15, "price_type": "input"},
-            {"sku_id": "gpt-4o-mini", "price": 0.60, "price_type": "output"},
-            # GPT-4-turbo
+            # GPT-4-turbo (高性能模型)
             {"sku_id": "gpt-4-turbo", "price": 10.00, "price_type": "input"},
             {"sku_id": "gpt-4-turbo", "price": 30.00, "price_type": "output"},
-            # o1
-            {"sku_id": "o1", "price": 15.00, "price_type": "input"},
-            {"sku_id": "o1", "price": 60.00, "price_type": "output"},
-            # o1-mini
-            {"sku_id": "o1-mini", "price": 3.00, "price_type": "input"},
-            {"sku_id": "o1-mini", "price": 12.00, "price_type": "output"},
-            # o3-mini
-            {"sku_id": "o3-mini", "price": 1.10, "price_type": "input"},
-            {"sku_id": "o3-mini", "price": 4.40, "price_type": "output"},
-            # GPT-3.5-turbo
-            {"sku_id": "gpt-3.5-turbo", "price": 0.50, "price_type": "input"},
-            {"sku_id": "gpt-3.5-turbo", "price": 1.50, "price_type": "output"},
         ]
         
         return [

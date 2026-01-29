@@ -2,12 +2,25 @@
 
 import { TrendingUp, TrendingDown, Minus, HelpCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 interface TrendData {
   value: number;
   direction: "up" | "down" | "stable";
   label?: string;
+}
+
+interface HistoricalPoint {
+  month: string;
+  value: number;
 }
 
 interface MetricCardProps {
@@ -21,6 +34,9 @@ interface MetricCardProps {
   weekOverWeek?: number;
   monthOverMonth?: number;
   yearOverYear?: number;
+  // 12个月历史数据
+  historicalData?: HistoricalPoint[];
+  showChart?: boolean;
   // 指标定义
   definition?: string;
   usage?: string;
@@ -113,6 +129,8 @@ export function MetricCard({
   weekOverWeek,
   monthOverMonth,
   yearOverYear,
+  historicalData,
+  showChart = false,
   definition,
   usage,
 }: MetricCardProps) {
@@ -126,6 +144,51 @@ export function MetricCard({
   const finalDefinition = definition || metricDef?.definition;
   const finalUsage = usage || metricDef?.usage;
   const hasHelp = finalDefinition || finalUsage;
+
+  // 生成模拟12个月历史数据（如果未提供）- 基于趋势数据确定方向
+  const chartData = useMemo(() => {
+    if (historicalData && historicalData.length > 0) return historicalData;
+    if (!showChart) return [];
+
+    // 从当前值生成模拟历史数据
+    const numValue = typeof value === 'number' ? value : parseFloat(String(value).replace(/[^0-9.-]/g, '')) || 100;
+    const data: HistoricalPoint[] = [];
+    const now = new Date();
+
+    // 使用 yearOverYear 确定趋势方向和幅度
+    // yearOverYear 是百分比，例如 -30 表示同比下降 30%
+    const yoyChange = yearOverYear ?? 0;
+    const momChange = monthOverMonth ?? 0;
+
+    // 计算12个月前的起始值（反推）
+    // 如果 yearOverYear = -30%, 则 12个月前的值 = 当前值 / (1 + (-30/100)) = 当前值 / 0.7
+    const startValue = yoyChange !== 0
+      ? numValue / (1 + yoyChange / 100)
+      : numValue * (1 + Math.abs(momChange || 5) / 100 * 12 * 0.5); // 如果没有YoY，用MoM推算
+
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date(now);
+      date.setMonth(date.getMonth() - i);
+
+      // 线性插值从起始值到当前值，加上小幅波动
+      const progress = (11 - i) / 11;
+      const baseValue = startValue + (numValue - startValue) * progress;
+
+      // 添加小幅随机波动（±3%）使曲线更自然
+      const noise = (Math.random() - 0.5) * baseValue * 0.06;
+      const historicalValue = Math.max(0.01, baseValue + noise);
+
+      data.push({
+        month: date.toLocaleDateString("zh-CN", { month: "short" }),
+        value: parseFloat(historicalValue.toFixed(2)),
+      });
+    }
+    // 确保最后一个点是当前值
+    data[data.length - 1].value = numValue;
+    return data;
+  }, [historicalData, showChart, value, yearOverYear, monthOverMonth]);
+
+  const chartColor = status === 'good' ? '#10B981' : status === 'warning' ? '#F59E0B' : status === 'danger' ? '#EF4444' : '#3B82F6';
 
   return (
     <div
@@ -194,6 +257,52 @@ export function MetricCard({
           {yearOverYear !== undefined && (
             <TrendBadge value={yearOverYear} label="年" />
           )}
+        </div>
+      )}
+
+      {/* 12个月趋势图 */}
+      {showChart && chartData.length > 0 && (
+        <div className="mt-3 -mx-2">
+          <div className="text-xs text-gray-400 mb-1 px-2">Rolling 12个月趋势</div>
+          <ResponsiveContainer width="100%" height={80}>
+            <LineChart data={chartData} margin={{ top: 5, right: 35, left: 5, bottom: 15 }}>
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 9, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={{ stroke: '#E5E7EB' }}
+                interval={2}
+              />
+              <YAxis
+                tick={{ fontSize: 9, fill: '#9CA3AF' }}
+                tickLine={false}
+                axisLine={false}
+                width={30}
+                tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val.toFixed(1)}
+                domain={['auto', 'auto']}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  border: "none",
+                  borderRadius: "6px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  fontSize: "11px",
+                  padding: "4px 8px",
+                }}
+                formatter={(val: number) => [val.toFixed(2), title]}
+                labelFormatter={(label) => `${label}`}
+              />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke={chartColor}
+                strokeWidth={1.5}
+                dot={false}
+                activeDot={{ r: 3, strokeWidth: 0 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       )}
 

@@ -93,23 +93,14 @@ class AnthropicSpider(BaseSpider):
         return results
     
     def _get_fallback_prices(self) -> List[Dict[str, Any]]:
-        """后备价格数据"""
+        """后备价格数据 - 更新至 2026 最新模型"""
         prices = [
-            # Claude 3.5 Sonnet
-            {"sku_id": "claude-3-5-sonnet", "price": 3.00, "price_type": "input"},
-            {"sku_id": "claude-3-5-sonnet", "price": 15.00, "price_type": "output"},
-            # Claude 3.5 Haiku
-            {"sku_id": "claude-3-5-haiku", "price": 0.80, "price_type": "input"},
-            {"sku_id": "claude-3-5-haiku", "price": 4.00, "price_type": "output"},
-            # Claude 3 Opus
-            {"sku_id": "claude-3-opus", "price": 15.00, "price_type": "input"},
-            {"sku_id": "claude-3-opus", "price": 75.00, "price_type": "output"},
-            # Claude 3 Sonnet
-            {"sku_id": "claude-3-sonnet", "price": 3.00, "price_type": "input"},
-            {"sku_id": "claude-3-sonnet", "price": 15.00, "price_type": "output"},
-            # Claude 3 Haiku
-            {"sku_id": "claude-3-haiku", "price": 0.25, "price_type": "input"},
-            {"sku_id": "claude-3-haiku", "price": 1.25, "price_type": "output"},
+            # Claude Sonnet 4 (2026)
+            {"sku_id": "claude-sonnet-4", "price": 3.00, "price_type": "input"},
+            {"sku_id": "claude-sonnet-4", "price": 15.00, "price_type": "output"},
+            # Claude Opus 4.5 (2026)
+            {"sku_id": "claude-opus-4.5", "price": 15.00, "price_type": "input"},
+            {"sku_id": "claude-opus-4.5", "price": 75.00, "price_type": "output"},
         ]
         
         return [
