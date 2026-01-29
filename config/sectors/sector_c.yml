@@ -1,0 +1,131 @@
+# C板块：算力供需信号
+# 追踪GPU租赁和云服务价格
+
+sector:
+  id: "C"
+  name: "算力供需"
+  name_en: "Compute Supply/Demand"
+  description: "追踪GPU租赁价格和云实例定价"
+  enabled: true
+  crawl_schedule: "0 3 * * *"  # 每日凌晨3点
+
+providers:
+  - id: "lambda"
+    name: "Lambda Labs"
+    country: "US"
+    pricing_url: "https://lambdalabs.com/service/gpu-cloud"
+    spider_class: "plugins.sectors.sector_c.LambdaPricingSpider"
+    provider_type: "gpu_cloud"
+    enabled: true
+    
+  - id: "coreweave"
+    name: "CoreWeave"
+    country: "US"
+    pricing_url: "https://www.coreweave.com/gpu-cloud-pricing"
+    spider_class: "plugins.sectors.sector_c.CoreWeavePricingSpider"
+    provider_type: "gpu_cloud"
+    enabled: true
+    
+  - id: "runpod"
+    name: "RunPod"
+    country: "US"
+    pricing_url: "https://www.runpod.io/gpu-instance/pricing"
+    spider_class: "plugins.sectors.sector_c.RunPodPricingSpider"
+    provider_type: "gpu_cloud"
+    enabled: true
+    
+  - id: "vastai"
+    name: "Vast.ai"
+    country: "US"
+    pricing_url: "https://vast.ai/pricing"
+    spider_class: "plugins.sectors.sector_c.VastAIPricingSpider"
+    provider_type: "gpu_marketplace"
+    enabled: true
+    
+  - id: "aws"
+    name: "AWS"
+    country: "US"
+    pricing_url: "https://aws.amazon.com/ec2/instance-types/p5/"
+    spider_class: "plugins.sectors.sector_c.AWSPricingSpider"
+    provider_type: "hyperscaler"
+    enabled: true
+    
+  - id: "azure"
+    name: "Azure"
+    country: "US"
+    pricing_url: "https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/"
+    spider_class: "plugins.sectors.sector_c.AzurePricingSpider"
+    provider_type: "hyperscaler"
+    enabled: true
+    
+  - id: "gcp"
+    name: "Google Cloud"
+    country: "US"
+    pricing_url: "https://cloud.google.com/compute/gpus-pricing"
+    spider_class: "plugins.sectors.sector_c.GCPPricingSpider"
+    provider_type: "hyperscaler"
+    enabled: true
+
+skus:
+  lambda:
+    - id: "h100-80gb"
+      name: "NVIDIA H100 80GB"
+      gpu_model: "H100"
+      gpu_memory: 80
+      price_types: ["on_demand"]
+      unit: "per_hour"
+      
+    - id: "h200-141gb"
+      name: "NVIDIA H200 141GB"
+      gpu_model: "H200"
+      gpu_memory: 141
+      price_types: ["on_demand"]
+      unit: "per_hour"
+
+  coreweave:
+    - id: "h100-80gb-sxm5"
+      name: "H100 80GB SXM5"
+      gpu_model: "H100"
+      gpu_memory: 80
+      price_types: ["on_demand", "reserved_1yr"]
+      unit: "per_hour"
+
+  runpod:
+    - id: "h100-pcie"
+      name: "H100 PCIe"
+      gpu_model: "H100"
+      gpu_memory: 80
+      price_types: ["on_demand", "spot"]
+      unit: "per_hour"
+
+  vastai:
+    - id: "h100-avg"
+      name: "H100 Market Average"
+      gpu_model: "H100"
+      gpu_memory: 80
+      price_types: ["market_avg", "market_low"]
+      unit: "per_hour"
+
+  aws:
+    - id: "p5.48xlarge"
+      name: "p5.48xlarge (8x H100)"
+      gpu_model: "H100"
+      gpu_count: 8
+      price_types: ["on_demand", "spot"]
+      unit: "per_hour"
+
+  azure:
+    - id: "nd-h100-v5"
+      name: "ND H100 v5 (8x H100)"
+      gpu_model: "H100"
+      gpu_count: 8
+      price_types: ["on_demand", "spot"]
+      unit: "per_hour"
+
+  gcp:
+    - id: "a3-highgpu-8g"
+      name: "a3-highgpu-8g (8x H100)"
+      gpu_model: "H100"
+      gpu_count: 8
+      price_types: ["on_demand", "spot"]
+      unit: "per_hour"

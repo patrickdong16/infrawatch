@@ -1,0 +1,112 @@
+# 阶段判定规则配置
+# 定义S0-S3四阶段的判定条件
+
+stages:
+  - id: "S0"
+    name: "不可持续"
+    name_en: "Unsustainable"
+    color: "#ef4444"
+    position: 12.5
+    description: "AI基建处于严重补贴期，收入远不能覆盖折旧"
+    
+    conditions:
+      # 所有条件必须同时满足
+      all:
+        - metric: "M01"
+          field: "value_high"  # 使用乐观估计
+          operator: "<"
+          value: 0.3
+        - metric: "B_qoq_deflation"
+          operator: ">"
+          value: 0.15           # 价格季度降幅超过15%
+        - metric: "C_spot_discount"
+          operator: ">"
+          value: 0.40           # Spot折扣超过40%
+    
+    transition_risk: "高风险，关注资本支出削减信号"
+
+  - id: "S1"
+    name: "临界过渡"
+    name_en: "Critical Transition"
+    color: "#f59e0b"
+    position: 37.5
+    description: "AI基建处于过渡期，需观察趋势方向"
+    
+    conditions:
+      # 任一条件满足
+      any:
+        - metric: "M01"
+          field: "value"
+          operator: "between"
+          value: [0.3, 0.7]
+        - condition_group:
+            # A板块指标连续两季正增长
+            sector: "A"
+            consecutive_positive_quarters: 2
+    
+    transition_risk: "不确定期，关注采用率和价格趋势"
+
+  - id: "S2"
+    name: "早期自养"
+    name_en: "Early Self-Sufficiency"
+    color: "#84cc16"
+    position: 62.5
+    description: "AI基建接近自养，收入基本覆盖折旧"
+    
+    conditions:
+      all:
+        - metric: "M01"
+          field: "value_low"  # 使用保守估计
+          operator: ">"
+          value: 0.7
+        - metric: "C_rental_index"
+          change_type: "mom"
+          operator: "between"
+          value: [-0.05, 0.05]  # 月环比变化在±5%以内
+        - metric: "E_supply_tightness"
+          operator: "stable"   # 供应紧张度稳定
+          tolerance: 0.10
+    
+    transition_risk: "相对稳定，关注需求持续性"
+
+  - id: "S3"
+    name: "成熟工业化"
+    name_en: "Mature Industrialization"  
+    color: "#22c55e"
+    position: 87.5
+    description: "AI基建完全自养，进入成熟工业化阶段"
+    
+    conditions:
+      all:
+        - metric: "M01"
+          field: "value_low"
+          operator: ">"
+          value: 1.0
+        - metric: "B_price_index"
+          change_type: "qoq"
+          operator: "<"
+          value: 0             # 价格仍在下降
+        - metric: "D3"         # 云利润率
+          operator: "stable"
+          tolerance: 0.05      # 稳定在±5%以内
+    
+    transition_risk: "低风险，产业进入常态化运营"
+
+# 阶段判定优先级 (从高到低)
+# 如果多个阶段条件都满足，取优先级最高的
+evaluation_order:
+  - "S0"    # 首先检查是否不可持续
+  - "S3"    # 然后检查是否成熟
+  - "S2"    # 再检查早期自养
+  - "S1"    # 最后默认为过渡期
+
+# 置信度计算规则
+confidence:
+  # 基础置信度
+  base: 0.60
+  # 每满足一个辅助条件增加的置信度
+  per_condition_bonus: 0.10
+  # 最高置信度
+  max: 0.95
+  # 数据缺失惩罚
+  missing_data_penalty: 0.15

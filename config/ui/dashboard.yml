@@ -1,0 +1,303 @@
+# UI配置 - 仪表盘页面
+# 定义页面布局和组件配置
+
+pages:
+  # ===== 价格监测页面 =====
+  - id: "prices"
+    name: "价格监测"
+    name_en: "Price Monitor"
+    path: "/prices"
+    icon: "TrendingDown"
+    
+    sections:
+      - id: "price_indices"
+        type: "metric_cards"
+        title: "价格指数"
+        columns: 3
+        
+        items:
+          - metric_id: "B_price_index"
+            show_change: true
+            change_period: "wow"
+          - metric_id: "C_rental_index"
+            show_change: true
+            change_period: "wow"
+          - metric_id: "B_china_discount"
+            format: "percent"
+
+      - id: "current_prices"
+        type: "data_table"
+        title: "当前价格"
+        data_source: "/api/v1/prices/latest"
+        
+        columns:
+          - field: "provider.name"
+            header: "供应商"
+            width: 120
+            sortable: true
+          - field: "sku.name"
+            header: "模型/SKU"
+            width: 150
+            sortable: true
+          - field: "sector"
+            header: "板块"
+            width: 60
+            filterable: true
+          - field: "price"
+            header: "价格"
+            width: 100
+            format: "currency"
+            prefix: "$"
+            sortable: true
+          - field: "unit"
+            header: "单位"
+            width: 100
+          - field: "changes.wow"
+            header: "周环比"
+            width: 80
+            format: "percent_change"
+            color_rules:
+              positive: "red"      # 涨价是负面信号
+              negative: "green"    # 降价是正面信号
+          - field: "changes.mom"
+            header: "月环比"
+            width: 80
+            format: "percent_change"
+            color_rules:
+              positive: "red"
+              negative: "green"
+          - field: "recorded_at"
+            header: "更新时间"
+            width: 120
+            format: "relative_time"
+        
+        filters:
+          - field: "sector"
+            type: "select"
+            label: "板块"
+            options:
+              - { value: "B", label: "模型API" }
+              - { value: "C", label: "算力" }
+          - field: "provider.country"
+            type: "select"
+            label: "地区"
+            options:
+              - { value: "US", label: "美国" }
+              - { value: "CN", label: "中国" }
+          - field: "sku.category"
+            type: "select"
+            label: "类型"
+            options:
+              - { value: "flagship", label: "旗舰" }
+              - { value: "economy", label: "经济型" }
+              - { value: "reasoning", label: "推理" }
+        
+        pagination:
+          page_size: 20
+          show_total: true
+
+      - id: "price_trend"
+        type: "line_chart"
+        title: "价格趋势"
+        data_source: "/api/v1/prices/history"
+        height: 350
+        
+        x_axis:
+          field: "date"
+          format: "MM/DD"
+        y_axis:
+          label: "价格"
+          format: "currency"
+        series_key: "provider_sku"
+        
+        controls:
+          - type: "time_range"
+            options:
+              - { value: "1M", label: "1个月" }
+              - { value: "3M", label: "3个月" }
+              - { value: "6M", label: "6个月" }
+              - { value: "1Y", label: "1年" }
+            default: "3M"
+          - type: "series_selector"
+            max_selections: 5
+            default_selections: ["openai/gpt-4o", "anthropic/claude-3.5-sonnet"]
+
+  # ===== 阶段仪表盘 =====
+  - id: "stage"
+    name: "阶段仪表盘"
+    name_en: "Stage Dashboard"
+    path: "/stage"
+    icon: "Gauge"
+    
+    sections:
+      - id: "stage_gauge"
+        type: "gauge"
+        title: "当前周期阶段"
+        data_source: "/api/v1/stage/current"
+        
+        config:
+          min: 0
+          max: 100
+          stages:
+            S0: { start: 0, end: 25, color: "#ef4444", label: "不可持续" }
+            S1: { start: 25, end: 50, color: "#f59e0b", label: "临界过渡" }
+            S2: { start: 50, end: 75, color: "#84cc16", label: "早期自养" }
+            S3: { start: 75, end: 100, color: "#22c55e", label: "成熟工业化" }
+          show_confidence: true
+          show_rationale: true
+
+      - id: "key_metrics"
+        type: "metric_cards"
+        title: "关键指标"
+        columns: 4
+        
+        items:
+          - metric_id: "M01"
+            label: "M01覆盖率"
+            format: "range"
+            thresholds: [0.3, 0.7, 1.0]
+          - metric_id: "B_qoq_deflation"
+            label: "季度价格降幅"
+            format: "percent"
+          - metric_id: "C_spot_discount"
+            label: "Spot折扣"
+            format: "percent"
+          - metric_id: "E_supply_tightness"
+            label: "供应紧张度"
+            format: "score"
+
+      - id: "stage_history"
+        type: "timeline"
+        title: "阶段变化历史"
+        data_source: "/api/v1/stage/history"
+        
+        config:
+          show_transitions: true
+          highlight_current: true
+
+  # ===== 信号中心 =====
+  - id: "signals"
+    name: "信号中心"
+    name_en: "Signal Center"
+    path: "/signals"
+    icon: "Bell"
+    
+    sections:
+      - id: "signal_stats"
+        type: "metric_cards"
+        columns: 4
+        
+        items:
+          - id: "total_unread"
+            label: "未读信号"
+            data_source: "/api/v1/signals/stats"
+            field: "unread_count"
+            highlight_when_positive: true
+          - id: "high_severity"
+            label: "高严重度"
+            field: "high_count"
+            color: "#ef4444"
+          - id: "medium_severity"
+            label: "中严重度"
+            field: "medium_count"
+            color: "#f59e0b"
+          - id: "last_24h"
+            label: "24小时内"
+            field: "last_24h_count"
+
+      - id: "signal_list"
+        type: "signal_feed"
+        title: "信号列表"
+        data_source: "/api/v1/signals"
+        
+        config:
+          show_severity_badge: true
+          show_timestamp: true
+          show_stage_implication: true
+          enable_mark_read: true
+          group_by_date: true
+        
+        filters:
+          - field: "severity"
+            type: "multi_select"
+            options: ["high", "medium", "low"]
+          - field: "type"
+            type: "multi_select"
+            options: ["price_move", "coverage_threshold", "adoption_inflection", "supply_chain_alert"]
+          - field: "is_read"
+            type: "toggle"
+            label: "仅显示未读"
+        
+        pagination:
+          page_size: 20
+          infinite_scroll: true
+
+  # ===== 供应链监测 =====
+  - id: "supply-chain"
+    name: "供应链监测"
+    name_en: "Supply Chain"
+    path: "/supply-chain"
+    icon: "Factory"
+    
+    sections:
+      - id: "supply_indices"
+        type: "metric_cards"
+        columns: 3
+        
+        items:
+          - metric_id: "E_hbm_premium"
+            label: "HBM溢价"
+            format: "multiple"
+          - metric_id: "E_memory_cost_index"
+            label: "内存成本指数"
+            format: "index"
+          - metric_id: "E_supply_tightness"
+            label: "供应紧张度"
+            format: "score"
+
+      - id: "supply_prices"
+        type: "data_table"
+        title: "供应链价格"
+        data_source: "/api/v1/supply-chain/latest"
+        
+        columns:
+          - field: "provider.name"
+            header: "数据源"
+          - field: "sku.name"
+            header: "指标"
+          - field: "value"
+            header: "数值"
+            format: "auto"
+          - field: "unit"
+            header: "单位"
+          - field: "changes.mom"
+            header: "月环比"
+            format: "percent_change"
+          - field: "recorded_at"
+            header: "更新时间"
+            format: "date"
+
+# 导航配置
+navigation:
+  main:
+    - { id: "stage", icon: "Gauge", label: "阶段仪表盘" }
+    - { id: "prices", icon: "TrendingDown", label: "价格监测" }
+    - { id: "signals", icon: "Bell", label: "信号中心", badge: "unread_count" }
+    - { id: "supply-chain", icon: "Factory", label: "供应链" }
+  
+  footer:
+    - { id: "settings", icon: "Settings", label: "设置" }
+    - { id: "docs", icon: "Book", label: "文档", href: "/docs" }
+
+# 主题配置
+theme:
+  colors:
+    primary: "#3b82f6"
+    success: "#22c55e"
+    warning: "#f59e0b"
+    danger: "#ef4444"
+    neutral: "#6b7280"
+  
+  dark_mode:
+    enabled: true
+    default: "system"

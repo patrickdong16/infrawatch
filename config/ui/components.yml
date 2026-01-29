@@ -1,0 +1,155 @@
+# 组件类型定义
+# 定义可用的动态渲染组件及其配置规范
+
+components:
+  # ===== 数据表格 =====
+  - type: "data_table"
+    description: "可排序、可筛选的数据表格"
+    
+    props:
+      columns:
+        type: "array"
+        required: true
+        item_schema:
+          field: { type: "string", required: true }
+          header: { type: "string", required: true }
+          width: { type: "number" }
+          format: { type: "string", enum: ["text", "currency", "percent", "percent_change", "date", "relative_time"] }
+          sortable: { type: "boolean", default: true }
+          filterable: { type: "boolean", default: false }
+          color_rules: { type: "object" }
+      
+      filters:
+        type: "array"
+        item_schema:
+          field: { type: "string", required: true }
+          type: { type: "string", enum: ["select", "multi_select", "text", "date_range"] }
+          label: { type: "string" }
+          options: { type: "array" }
+      
+      pagination:
+        type: "object"
+        default: { page_size: 20, show_total: true }
+
+  # ===== 折线图 =====
+  - type: "line_chart"
+    description: "时间序列折线图"
+    
+    props:
+      x_axis:
+        type: "object"
+        required: true
+        schema:
+          field: { type: "string", required: true }
+          format: { type: "string", default: "MM/DD" }
+      
+      y_axis:
+        type: "object"
+        schema:
+          label: { type: "string" }
+          format: { type: "string", enum: ["number", "currency", "percent"] }
+          min: { type: "number" }
+          max: { type: "number" }
+      
+      series_key: { type: "string", required: true }
+      height: { type: "number", default: 300 }
+      
+      controls:
+        type: "array"
+        item_schema:
+          type: { type: "string", enum: ["time_range", "series_selector"] }
+          options: { type: "array" }
+          default: { type: "any" }
+
+  # ===== 仪表盘 =====
+  - type: "gauge"
+    description: "阶段指示仪表盘"
+    
+    props:
+      config:
+        type: "object"
+        required: true
+        schema:
+          min: { type: "number", default: 0 }
+          max: { type: "number", default: 100 }
+          stages: { type: "object", required: true }
+          show_confidence: { type: "boolean", default: true }
+          show_rationale: { type: "boolean", default: true }
+
+  # ===== 指标卡片 =====
+  - type: "metric_cards"
+    description: "关键指标卡片组"
+    
+    props:
+      columns: { type: "number", default: 4, enum: [2, 3, 4] }
+      
+      items:
+        type: "array"
+        required: true
+        item_schema:
+          metric_id: { type: "string", required: true }
+          label: { type: "string" }
+          format: { type: "string", enum: ["number", "currency", "percent", "range", "score", "multiple", "index"] }
+          show_change: { type: "boolean", default: false }
+          change_period: { type: "string", enum: ["wow", "mom", "qoq"] }
+          thresholds: { type: "array" }
+
+  # ===== 信号列表 =====
+  - type: "signal_feed"
+    description: "信号列表/Feed"
+    
+    props:
+      config:
+        type: "object"
+        schema:
+          show_severity_badge: { type: "boolean", default: true }
+          show_timestamp: { type: "boolean", default: true }
+          show_stage_implication: { type: "boolean", default: true }
+          enable_mark_read: { type: "boolean", default: true }
+          group_by_date: { type: "boolean", default: false }
+      
+      filters: { type: "array" }
+      pagination:
+        type: "object"
+        schema:
+          page_size: { type: "number", default: 20 }
+          infinite_scroll: { type: "boolean", default: false }
+
+  # ===== 时间线 =====
+  - type: "timeline"
+    description: "事件时间线"
+    
+    props:
+      config:
+        type: "object"
+        schema:
+          show_transitions: { type: "boolean", default: true }
+          highlight_current: { type: "boolean", default: true }
+
+# 格式化器定义
+formatters:
+  currency:
+    prefix: "$"
+    decimal_places: 2
+    thousands_separator: ","
+  
+  percent:
+    suffix: "%"
+    decimal_places: 1
+  
+  percent_change:
+    prefix_positive: "+"
+    suffix: "%"
+    decimal_places: 1
+    color:
+      positive: "green"
+      negative: "red"
+      zero: "gray"
+  
+  relative_time:
+    thresholds:
+      - { max_seconds: 60, format: "刚刚" }
+      - { max_seconds: 3600, format: "{n}分钟前" }
+      - { max_seconds: 86400, format: "{n}小时前" }
+      - { max_seconds: 604800, format: "{n}天前" }
+      - { default: "yyyy-MM-dd" }

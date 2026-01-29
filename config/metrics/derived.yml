@@ -1,0 +1,182 @@
+# 派生指标配置
+# 定义如何从原始数据计算派生指标
+
+metrics:
+  # ===== B板块派生指标 =====
+  - id: "B_price_index"
+    name: "模型API价格指数"
+    name_en: "Model API Price Index"
+    sector: "B"
+    type: "weighted_average"
+    unit: "USD/M tokens"
+    description: "主流模型输入价格加权平均"
+    
+    inputs:
+      - source: { provider: "openai", sku: "gpt-4o", price_type: "input" }
+        weight: 0.35
+      - source: { provider: "anthropic", sku: "claude-3.5-sonnet", price_type: "input" }
+        weight: 0.30
+      - source: { provider: "google", sku: "gemini-1.5-pro", price_type: "input" }
+        weight: 0.20
+      - source: { provider: "deepseek", sku: "deepseek-v3", price_type: "input" }
+        weight: 0.15
+    
+    changes:
+      - period: "wow"   # week-over-week
+      - period: "mom"   # month-over-month
+      - period: "qoq"   # quarter-over-quarter
+
+  - id: "B_china_discount"
+    name: "中国厂商折扣率"
+    name_en: "China Vendor Discount"
+    sector: "B"
+    type: "ratio"
+    unit: "percent"
+    description: "DeepSeek相对OpenAI的价格比率"
+    
+    formula: "(deepseek_input / openai_input) * 100"
+    inputs:
+      deepseek_input: { provider: "deepseek", sku: "deepseek-v3", price_type: "input" }
+      openai_input: { provider: "openai", sku: "gpt-4o", price_type: "input" }
+
+  - id: "B_qoq_deflation"
+    name: "季度价格降幅"
+    name_en: "QoQ Price Deflation"
+    sector: "B"
+    type: "change_rate"
+    unit: "percent"
+    description: "B_price_index的季度环比降幅"
+    
+    base_metric: "B_price_index"
+    period: "qoq"
+    invert: true  # 降幅用正数表示
+
+  # ===== C板块派生指标 =====
+  - id: "C_rental_index"
+    name: "GPU租赁价格指数"
+    name_en: "GPU Rental Price Index"
+    sector: "C"
+    type: "weighted_average"
+    unit: "USD/hour"
+    description: "H100主流租赁价格加权平均"
+    
+    inputs:
+      - source: { provider: "lambda", sku: "h100-80gb", price_type: "on_demand" }
+        weight: 0.25
+      - source: { provider: "coreweave", sku: "h100-80gb-sxm5", price_type: "on_demand" }
+        weight: 0.25
+      - source: { provider: "runpod", sku: "h100-pcie", price_type: "on_demand" }
+        weight: 0.20
+      - source: { provider: "vastai", sku: "h100-avg", price_type: "market_avg" }
+        weight: 0.30
+    
+    changes:
+      - period: "wow"
+      - period: "mom"
+
+  - id: "C_spot_discount"
+    name: "Spot折扣幅度"
+    name_en: "Spot Discount Rate"
+    sector: "C"
+    type: "ratio"
+    unit: "percent"
+    description: "Spot相对On-Demand的折扣幅度"
+    
+    formula: "(1 - spot_price / ondemand_price) * 100"
+    inputs:
+      spot_price: { provider: "aws", sku: "p5.48xlarge", price_type: "spot" }
+      ondemand_price: { provider: "aws", sku: "p5.48xlarge", price_type: "on_demand" }
+
+  - id: "C_hyperscaler_premium"
+    name: "超大规模溢价"
+    name_en: "Hyperscaler Premium"
+    sector: "C"
+    type: "ratio"
+    unit: "percent"
+    description: "Hyperscaler相对独立GPU云的溢价"
+    
+    formula: "(hyperscaler_avg / indie_avg - 1) * 100"
+    # 具体输入在计算时动态获取
+
+  # ===== E板块派生指标 =====
+  - id: "E_hbm_premium"
+    name: "HBM溢价指数"
+    name_en: "HBM Premium Index"
+    sector: "E"
+    type: "ratio"
+    unit: "multiple"
+    description: "HBM3e相对DDR5的价格倍数"
+    
+    formula: "hbm_price / ddr5_price"
+    inputs:
+      hbm_price: { provider: "trendforce", sku: "hbm3e-contract" }
+      ddr5_price: { provider: "trendforce", sku: "ddr5-server-spot" }
+
+  - id: "E_memory_cost_index"
+    name: "内存成本指数"
+    name_en: "Memory Cost Index"
+    sector: "E"
+    type: "composite"
+    unit: "index"
+    description: "综合HBM和DRAM价格走势"
+    base_date: "2024-01-01"
+    
+    components:
+      - metric: "hbm3e-contract"
+        weight: 0.6
+      - metric: "ddr5-server-spot"
+        weight: 0.4
+
+  - id: "E_supply_tightness"
+    name: "供应紧张度"
+    name_en: "Supply Tightness Score"
+    sector: "E"
+    type: "composite_score"
+    unit: "score"
+    range: [0, 100]
+    description: "综合产能利用率和出货增速的供应紧张评分"
+    
+    components:
+      - metric: { provider: "tsmc_ir", sku: "cowos-utilization" }
+        weight: 0.5
+        transform: "normalize_0_100"
+      - metric: { provider: "skhynix_ir", sku: "hbm-shipment-qoq" }
+        weight: 0.5
+        transform: "growth_to_tightness"
+
+  # ===== 跨板块核心指标 =====
+  - id: "M01"
+    name: "推理覆盖率"
+    name_en: "Inference Coverage Ratio"
+    sector: "cross"
+    type: "range"
+    unit: "ratio"
+    description: "AI推理收入 / AI相关资产年化折旧"
+    
+    formula: "ai_revenue / depreciation"
+    params:
+      # AI Capex占比假设区间
+      ai_capex_ratio_low: 0.40
+      ai_capex_ratio_high: 0.60
+      # 折旧年限
+      depreciation_years: 4
+    
+    inputs:
+      # D板块财报数据
+      total_capex: { sector: "D", metric: "D1" }  # 总Capex
+      ai_revenue: { sector: "D", metric: "D2" }   # AI年化收入
+    
+    # 阈值定义 (用于阶段判定)
+    thresholds:
+      - value: 0.3
+        label: "补贴期"
+        color: "#ef4444"
+        stage_impact: "S0"
+      - value: 0.7
+        label: "过渡期"
+        color: "#f59e0b"
+        stage_impact: "S1"
+      - value: 1.0
+        label: "自养"
+        color: "#22c55e"
+        stage_impact: "S2+"

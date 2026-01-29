@@ -5,63 +5,116 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
 import { PriceSummary } from "@/components/dashboard/PriceSummary";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
+import { useSummary } from "@/lib/api-hooks";
+import { RefreshCw } from "lucide-react";
 
 export default function DashboardPage() {
+  const { data, isLoading, error } = useSummary();
+  const summary = data?.data;
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page title */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">监测仪表盘</h1>
-        <p className="text-gray-500 mt-1">AI 基建可持续性实时监测概览</p>
-      </div>
-
-      {/* Stage gauge and key metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Stage gauge - takes 2 columns */}
-        <div className="lg:col-span-2">
-          <StageGauge
-            stage="S1"
-            confidence="MEDIUM"
-            rationale="M01区间 0.24-0.36，A板块指标连续两季正增长"
-          />
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">监测仪表盘</h1>
+          <p className="text-gray-500 mt-1">AI 基建可持续性实时监测概览</p>
         </div>
+        {summary?.last_updated && (
+          <span className="text-xs text-gray-400">
+            更新于 {new Date(summary.last_updated).toLocaleTimeString()}
+          </span>
+        )}
+      </div>
 
-        {/* Key metrics */}
-        <div className="space-y-4">
-          <MetricCard
-            title="M01 覆盖率"
-            value="0.24 - 0.36"
-            status="warning"
-            description="过渡期"
-            trend={{ value: 8, direction: "up" }}
-          />
-          <MetricCard
-            title="B板块价格指数"
-            value="$5.42"
-            unit="/M tokens"
-            status="good"
-            trend={{ value: -8.5, direction: "down" }}
-          />
-          <MetricCard
-            title="供应链紧张度"
-            value="0.87"
-            status="danger"
-            description=">0.8 为紧张"
-          />
+      {/* Loading state */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-12 text-gray-400">
+          <RefreshCw className="w-6 h-6 animate-spin mr-2" />
+          加载监测数据...
         </div>
-      </div>
+      )}
 
-      {/* Supply chain alert */}
-      <SupplyChainAlert />
+      {/* Error state */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <p className="text-red-600 font-medium">无法连接到后端 API</p>
+          <p className="text-red-500 text-sm mt-1">
+            请确保后端服务运行在 http://localhost:8000
+          </p>
+        </div>
+      )}
 
-      {/* Price summary and signals */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Price summary */}
-        <PriceSummary />
+      {/* Main content */}
+      {!isLoading && !error && (
+        <>
+          {/* Stage gauge and key metrics */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Stage gauge - takes 2 columns */}
+            <div className="lg:col-span-2">
+              <StageGauge
+                stage={summary?.stage?.current || "S1"}
+                confidence={summary?.stage?.confidence || "MEDIUM"}
+                rationale={summary?.stage?.description || "加载中..."}
+              />
+            </div>
 
-        {/* Recent signals */}
-        <SignalFeed />
-      </div>
+            {/* Key metrics from API */}
+            <div className="space-y-4">
+              {summary?.key_metrics?.map((metric, index) => (
+                <MetricCard
+                  key={metric.id || index}
+                  title={metric.name}
+                  value={metric.value}
+                  unit={metric.unit}
+                  status={metric.status || "neutral"}
+                  weekOverWeek={metric.weekOverWeek}
+                  monthOverMonth={metric.monthOverMonth}
+                  yearOverYear={metric.yearOverYear}
+                />
+              )) || (
+                  <>
+                    <MetricCard
+                      title="M01 覆盖率"
+                      value="0.24 - 0.36"
+                      status="warning"
+                      description="过渡期"
+                      weekOverWeek={8}
+                    />
+                    <MetricCard
+                      title="B板块价格指数"
+                      value="$2.73"
+                      unit="/M tokens"
+                      status="good"
+                      weekOverWeek={-5.2}
+                      monthOverMonth={-8.5}
+                    />
+                    <MetricCard
+                      title="C板块价格指数"
+                      value="$2.49"
+                      unit="/hour"
+                      status="neutral"
+                      weekOverWeek={-2.1}
+                      monthOverMonth={-4.0}
+                    />
+                  </>
+                )}
+            </div>
+          </div>
+
+          {/* Supply chain alert */}
+          <SupplyChainAlert />
+
+          {/* Price summary and signals */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Price summary */}
+            <PriceSummary />
+
+            {/* Recent signals */}
+            <SignalFeed />
+          </div>
+        </>
+      )}
     </div>
   );
 }

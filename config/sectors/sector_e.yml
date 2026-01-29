@@ -1,0 +1,75 @@
+# E板块：供应链价格信号
+# 追踪HBM、DRAM、封装等上游成本
+
+sector:
+  id: "E"
+  name: "供应链价格"
+  name_en: "Supply Chain Pricing"
+  description: "追踪HBM/DRAM/先进封装等上游成本"
+  enabled: true
+  crawl_schedule: "0 4 * * 1"  # 每周一凌晨4点
+
+providers:
+  - id: "trendforce"
+    name: "TrendForce"
+    country: "TW"
+    pricing_url: "https://www.trendforce.com/prices/dram"
+    spider_class: "plugins.sectors.sector_e.TrendForcePricingSpider"
+    subscription_required: true
+    enabled: true
+    
+  - id: "dramexchange"
+    name: "DRAMeXchange"
+    country: "TW"
+    pricing_url: "https://www.dramexchange.com"
+    spider_class: "plugins.sectors.sector_e.DRAMeXchangeSpider"
+    subscription_required: true
+    enabled: true
+    
+  - id: "skhynix_ir"
+    name: "SK Hynix IR"
+    country: "KR"
+    pricing_url: "https://www.skhynix.com/ir"
+    spider_class: "plugins.sectors.sector_e.SKHynixIRSpider"
+    subscription_required: false
+    enabled: true
+    
+  - id: "tsmc_ir"
+    name: "TSMC IR"
+    country: "TW"
+    pricing_url: "https://investor.tsmc.com"
+    spider_class: "plugins.sectors.sector_e.TSMCIRSpider"
+    subscription_required: false
+    enabled: true
+
+skus:
+  trendforce:
+    - id: "hbm3e-contract"
+      name: "HBM3e 合约价"
+      category: "hbm"
+      unit: "USD/GB"
+      
+    - id: "ddr5-server-spot"
+      name: "DDR5 服务器现货"
+      category: "dram"
+      unit: "USD/GB"
+
+  dramexchange:
+    - id: "ddr5-16gb-spot"
+      name: "DDR5 16Gb Spot"
+      category: "dram"
+      unit: "USD/pc"
+
+  skhynix_ir:
+    - id: "hbm-shipment-qoq"
+      name: "HBM出货量同比"
+      category: "hbm"
+      unit: "percent"
+      data_type: "growth_rate"
+
+  tsmc_ir:
+    - id: "cowos-utilization"
+      name: "CoWoS产能利用率"
+      category: "packaging"
+      unit: "percent"
+      data_type: "utilization"

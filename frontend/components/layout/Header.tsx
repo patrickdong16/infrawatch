@@ -1,11 +1,23 @@
 "use client";
 
 import { Bell, RefreshCw, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function Header() {
   const [unreadCount] = useState(3);
-  const [lastUpdated] = useState(new Date().toLocaleString("zh-CN"));
+  const [lastUpdated, setLastUpdated] = useState<string>("");
+
+  // 只在客户端更新时间，避免 hydration 错误
+  useEffect(() => {
+    setLastUpdated(new Date().toLocaleString("zh-CN"));
+
+    // 每分钟更新一次
+    const interval = setInterval(() => {
+      setLastUpdated(new Date().toLocaleString("zh-CN"));
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
@@ -26,7 +38,7 @@ export function Header() {
         {/* Last updated */}
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <RefreshCw className="w-4 h-4" />
-          <span>更新于 {lastUpdated}</span>
+          <span>{lastUpdated ? `更新于 ${lastUpdated}` : "加载中..."}</span>
         </div>
 
         {/* Notifications */}
@@ -47,3 +59,4 @@ export function Header() {
     </header>
   );
 }
+

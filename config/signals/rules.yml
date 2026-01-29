@@ -1,0 +1,171 @@
+# 信号触发规则配置
+# 定义何时触发何种严重程度的信号
+
+signals:
+  # ===== 价格变动信号 =====
+  - id: "price_move_high"
+    type: "price_move"
+    severity: "high"
+    enabled: true
+    description_template: "{provider} {sku} 价格{direction}{magnitude}%"
+    
+    trigger:
+      metric_type: "price"
+      sectors: ["B", "C"]
+      change_type: "wow"      # week-over-week
+      threshold: 0.10         # 10%
+      direction: "any"        # up, down, any
+    
+    stage_implication: "价格大幅变动，需关注供需格局变化"
+
+  - id: "price_move_medium"
+    type: "price_move"
+    severity: "medium"
+    enabled: true
+    description_template: "{provider} {sku} 价格{direction}{magnitude}%"
+    
+    trigger:
+      metric_type: "price"
+      sectors: ["B", "C"]
+      change_type: "wow"
+      threshold: 0.05         # 5%
+      threshold_max: 0.10     # 排除已触发high的
+      direction: "any"
+    
+    stage_implication: "价格温和变动，持续观察趋势"
+
+  # ===== M01覆盖率阈值信号 =====
+  - id: "coverage_threshold_03"
+    type: "coverage_threshold"
+    severity: "high"
+    enabled: true
+    description_template: "M01覆盖率{direction}0.3阈值"
+    
+    trigger:
+      metric_id: "M01"
+      threshold: 0.3
+      direction: "cross"      # 跨越阈值 (上穿或下穿)
+    
+    stage_implication: "关键阈值突破，可能预示阶段转换"
+
+  - id: "coverage_threshold_07"
+    type: "coverage_threshold"
+    severity: "high"
+    enabled: true
+    description_template: "M01覆盖率{direction}0.7阈值"
+    
+    trigger:
+      metric_id: "M01"
+      threshold: 0.7
+      direction: "cross"
+    
+    stage_implication: "接近自养阈值，关注可持续性"
+
+  - id: "coverage_threshold_10"
+    type: "coverage_threshold"
+    severity: "high"
+    enabled: true
+    description_template: "M01覆盖率{direction}1.0阈值"
+    
+    trigger:
+      metric_id: "M01"
+      threshold: 1.0
+      direction: "cross"
+    
+    stage_implication: "达到完全自养，产业进入成熟期"
+
+  # ===== 采用率拐点信号 =====
+  - id: "adoption_inflection"
+    type: "adoption_inflection"
+    severity: "medium"
+    enabled: true
+    description_template: "{metric_name} 环比加速{magnitude}%"
+    
+    trigger:
+      sector: "A"
+      metric_type: "adoption"
+      change_type: "qoq"
+      threshold: 0.20         # 季度环比加速20%
+      direction: "up"
+    
+    stage_implication: "企业采用加速，需求端信号积极"
+
+  # ===== 供需格局变化信号 =====
+  - id: "spot_discount_shift"
+    type: "supply_demand_shift"
+    severity: "medium"
+    enabled: true
+    description_template: "Spot折扣幅度变化{magnitude}pp"
+    
+    trigger:
+      metric_id: "C_spot_discount"
+      change_type: "wow"
+      threshold: 0.10         # 10个百分点变化
+      direction: "any"
+    
+    stage_implication: "Spot折扣大幅变化，反映供需平衡变化"
+
+  # ===== 供应链异动信号 =====
+  - id: "supply_chain_alert_hbm"
+    type: "supply_chain_alert"
+    severity: "medium"
+    enabled: true
+    description_template: "HBM价格{direction}{magnitude}%"
+    
+    trigger:
+      sector: "E"
+      sku_pattern: "hbm*"
+      change_type: "mom"
+      threshold: 0.15         # 月环比15%
+      direction: "any"
+    
+    stage_implication: "上游成本变化，可能传导至C板块"
+
+  - id: "supply_chain_alert_packaging"
+    type: "supply_chain_alert"
+    severity: "medium"
+    enabled: true
+    description_template: "CoWoS产能利用率{direction}至{value}%"
+    
+    trigger:
+      metric_id: "cowos-utilization"
+      threshold: 0.90         # 90%以上或以下
+      direction: "cross"
+    
+    stage_implication: "先进封装产能变化，影响GPU供给"
+
+  # ===== 披露变更信号 =====
+  - id: "disclosure_change"
+    type: "disclosure_change"
+    severity: "low"
+    enabled: true
+    description_template: "{provider} 停止/开始披露 {metric_name}"
+    
+    trigger:
+      event_type: "disclosure_change"
+      # 当爬虫连续3次失败或恢复时触发
+      consecutive_failures: 3
+    
+    stage_implication: "数据源变化，需评估影响"
+
+# 信号严重程度定义
+severity_levels:
+  high:
+    color: "#ef4444"
+    priority: 1
+    push_notification: true
+  medium:
+    color: "#f59e0b"
+    priority: 2
+    push_notification: false
+  low:
+    color: "#6b7280"
+    priority: 3
+    push_notification: false
+
+# 信号聚合规则 (避免重复推送)
+aggregation:
+  # 同一provider+sku在24小时内只推送一次高严重度信号
+  dedup_window_hours: 24
+  # 同类型信号最多保留最近100条
+  max_signals_per_type: 100
