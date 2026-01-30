@@ -104,7 +104,8 @@ infrawatch/
 │   │   ├── schemas/      # Pydantic 模型
 │   │   └── services/     # 服务层
 │   ├── config/           # YAML 配置
-│   │   └── supply_chain.yml       # 供应链历史数据
+│   │   ├── supply_chain.yml       # 供应链历史数据
+│   │   └── cloud_revenue.yml      # [新增] Cloud分部收入 (季度更新)
 │   ├── spiders/          # 爬虫模块
 │   └── workers/
 │       └── tasks/        # Celery 任务
@@ -114,7 +115,7 @@ infrawatch/
     │   └── prices/page.tsx        # 价格监测 (含厂商卡片)
     ├── components/       # 组件
     │   └── dashboard/
-    │       ├── AIFinancialsCard.tsx   # [新增] 财务指标卡片
+    │       ├── AISustainabilityCard.tsx   # [新增] 可持续性评分卡
     │       ├── MetricCard.tsx
     │       ├── PriceSummary.tsx
     │       ├── SignalFeed.tsx

@@ -156,7 +156,7 @@ D板块 (巨头财务健康度)
 | 模块 | 优先级 | 功能描述 | 状态 |
 |------|--------|----------|------|
 | **P8 厂商价格指数** | P1 | 各厂商加权平均价格对比，36.5x 差距横幅 | ✅ 已实现 |
-| **P9 AI巨头财务指标** | P1 | EODHD数据源，收入/CapEx增速对比图表 | ✅ 已实现 |
+| **P9 AI可持续性评分卡** | P1 | 资本密集度、Cloud收入、增速对比 | ✅ 已实现 |
 | **P10 价格趋势显示** | P1 | 周环比/月环比趋势列，fallback模拟趋势 | ✅ 已实现 |
 
 #### P8 厂商价格指数详情
@@ -167,16 +167,20 @@ D板块 (巨头财务健康度)
 - **厂商对比**: 显示最高价厂商与最低价厂商的倍数关系
 - **趋势显示**: 月环比变化
 
-#### P9 AI巨头财务指标详情
+#### P9 AI可持续性评分卡详情
 
 - **展示位置**: Dashboard 三栏布局中间
-- **数据来源**: EODHD API (通过 MCP)
-- **监控公司**: MSFT, GOOGL, AMZN, META, NVDA, TSLA
-- **核心指标**:
-  - 季度收入及 QoQ 增速
-  - CapEx (资本支出) 及 QoQ 增速
-  - CapEx/收入比率
-- **可视化**: 收入增速 vs CapEx增速双曲线图 (Recharts)
+- **数据来源**: 
+  - EODHD API: 总收入、CapEx
+  - YAML配置: Cloud分部收入 (Azure/AWS/GCP)
+- **三个核心指标**:
+  1. **资本密集度** (Capital Intensity): `CapEx / 总收入`，反映 AI 投资占比
+  2. **Cloud业务收入**: 仅展示三家 Cloud 公司 (MSFT/GOOGL/AMZN) 的分部收入
+  3. **增速差**: `Cloud增速 - CapEx增速`，正值=收入增速快于投资
+- **可视化**: 
+  - 三个指标卡片 (资本密集度、Cloud总收入、增速差)
+  - 增速对比双曲线图 (Recharts)
+  - Cloud业务收入条形图 (Azure/AWS/GCP)
 
 ---
 
@@ -251,6 +255,7 @@ infrawatch/
 | 供应链 | GET | `/api/v1/supply-chain/config-history` | 历史价格配置 |
 | 财务 | GET | `/api/v1/financials/ai-metrics` | **[新增]** AI巨头财务指标 |
 | 财务 | GET | `/api/v1/financials/growth-comparison` | **[新增]** 收入/CapEx增速对比 |
+| 财务 | GET | `/api/v1/financials/sustainability` | **[新增]** AI可持续性评分卡 |
 
 ---
 
@@ -326,3 +331,4 @@ infrawatch/
 |------|------|----------|
 | v1.0 | 2026-01-29 | 初始版本，基于PRD/TDD整合 |
 | v1.1 | 2026-01-30 | 新增 Phase 3: 厂商价格指数、EODHD财务集成、价格趋势显示 |
+| v1.2 | 2026-01-30 | AI可持续性评分卡: 资本密集度、Cloud收入、增速差 |
