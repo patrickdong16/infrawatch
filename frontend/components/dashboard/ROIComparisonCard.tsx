@@ -1,94 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Scale, ArrowUpRight, ArrowDownRight, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, ComposedChart, Bar } from 'recharts';
-
-interface ComparisonData {
-    quarter: string;
-    revenueGrowth: number;  // 收入增速 %
-    costGrowth: number;     // 成本增速 %
-    netMargin: number;      // 净差值（收入增速 - 成本增速）
-    coverageRatio: number;  // 覆盖率
-    efficiencyIndex: number; // 效率指数
-}
+import { useEffect, useState } from 'react';
+import { TrendingUp, TrendingDown, Scale, DollarSign, Server, AlertCircle, CheckCircle, HelpCircle } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+interface QuarterlyData {
+    quarter: string;
+    revenue_b: number;
+    revenue_growth: number;
+    depreciation_b: number;
+    depreciation_growth: number;
+    net_difference: number;
+    is_sustainable: boolean;
+}
+
+interface GrowthData {
+    title: string;
+    definitions: {
+        revenue: string;
+        depreciation: string;
+        revenue_growth: string;
+        depreciation_growth: string;
+        net_difference: string;
+    };
+    summary: {
+        latest_quarter: string;
+        latest_revenue_b: number;
+        latest_depreciation_b: number;
+        latest_revenue_growth: number;
+        latest_depreciation_growth: number;
+        latest_net_difference: number;
+        avg_net_4q: number;
+        trend: string;
+        trend_label: string;
+    };
+    quarterly_data: QuarterlyData[];
+}
+
 export default function ROIComparisonCard() {
-    const [data, setData] = useState<ComparisonData[]>([]);
+    const [data, setData] = useState<GrowthData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [sustainabilityScore, setSustainabilityScore] = useState<number>(0);
-    const [trend, setTrend] = useState<'improving' | 'stable' | 'declining'>('stable');
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 获取收入端数据
-                const revenueRes = await fetch(`${API_BASE}/api/v1/financials/ai-roi`);
-                const revenueData = await revenueRes.json();
-
-                // 获取成本端数据
-                const costRes = await fetch(`${API_BASE}/api/v1/financials/gpu-efficiency`);
-                const costData = await costRes.json();
-
-                if (revenueData.success && costData.success) {
-                    const coverageSeries = revenueData.data.inference_coverage.trend_series;
-                    const efficiencySeries = costData.data.pflops_series;
-
-                    // 合并数据，计算增速对比
-                    const combined: ComparisonData[] = [];
-
-                    for (let i = 0; i < coverageSeries.length; i++) {
-                        const quarter = coverageSeries[i].quarter;
-                        const coverageRatio = coverageSeries[i].coverage_ratio;
-                        const efficiency = efficiencySeries.find((e: any) => e.quarter === quarter);
-
-                        // 计算环比增速
-                        const prevCoverage = i > 0 ? coverageSeries[i - 1].coverage_ratio : coverageRatio;
-                        const prevEfficiency = i > 0 && efficiency ?
-                            (efficiencySeries.find((e: any) => e.quarter === coverageSeries[i - 1]?.quarter)?.index || 100) :
-                            (efficiency?.index || 100);
-
-                        // 收入增速 = 覆盖率变化（覆盖率上升说明收入相对成本在增加）
-                        const revenueGrowth = ((coverageRatio - prevCoverage) / prevCoverage) * 100;
-
-                        // 成本增速 = 效率指数变化的负值（效率上升说明成本在下降）
-                        const costGrowth = efficiency ?
-                            -((efficiency.index - prevEfficiency) / prevEfficiency) * 100 : 0;
-
-                        combined.push({
-                            quarter,
-                            revenueGrowth: Math.round(revenueGrowth * 10) / 10,
-                            costGrowth: Math.round(costGrowth * 10) / 10,
-                            netMargin: Math.round((revenueGrowth - costGrowth) * 10) / 10,
-                            coverageRatio,
-                            efficiencyIndex: efficiency?.index || 100,
-                        });
-                    }
-
-                    setData(combined);
-
-                    // 计算可持续性评分（基于最近4季度）
-                    const recent = combined.slice(-4);
-                    const avgNetMargin = recent.reduce((a, b) => a + b.netMargin, 0) / recent.length;
-                    const latestCoverage = recent[recent.length - 1]?.coverageRatio || 0;
-
-                    // 评分 = 覆盖率权重 * 50 + 净差值权重 * 50
-                    const score = Math.min(100, Math.max(0,
-                        (latestCoverage * 40) + (avgNetMargin > 0 ? 30 : 0) + (avgNetMargin * 2)
-                    ));
-                    setSustainabilityScore(Math.round(score));
-
-                    // 判断趋势
-                    if (avgNetMargin > 2) {
-                        setTrend('improving');
-                    } else if (avgNetMargin < -2) {
-                        setTrend('declining');
-                    } else {
-                        setTrend('stable');
-                    }
+                const res = await fetch(`${API_BASE}/api/v1/financials/growth-comparison`);
+                const json = await res.json();
+                if (json.success) {
+                    setData(json.data);
                 }
             } catch (e) {
                 setError(e instanceof Error ? e.message : '获取数据失败');
@@ -107,182 +70,221 @@ export default function ROIComparisonCard() {
         );
     }
 
-    if (error) {
+    if (error || !data) {
         return (
             <div className="bg-red-50 rounded-xl shadow-sm border border-red-100 p-6">
-                <p className="text-red-600">{error}</p>
+                <p className="text-red-600">{error || '数据加载失败'}</p>
             </div>
         );
     }
 
-    const latestData = data[data.length - 1];
-    const trendConfig = {
-        improving: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100', label: '可持续改善中' },
-        stable: { icon: Scale, color: 'text-yellow-600', bg: 'bg-yellow-100', label: '趋势平稳' },
-        declining: { icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-100', label: '需关注' },
+    const { summary, quarterly_data, definitions } = data;
+
+    // 趋势配置
+    const trendConfigs: Record<string, { icon: typeof CheckCircle; color: string; bg: string }> = {
+        strong_growth: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100' },
+        sustainable: { icon: CheckCircle, color: 'text-blue-600', bg: 'bg-blue-100' },
+        attention: { icon: AlertCircle, color: 'text-yellow-600', bg: 'bg-yellow-100' },
+        risk: { icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-100' },
     };
-    const TrendIcon = trendConfig[trend].icon;
+    const trendConfig = trendConfigs[summary.trend] || trendConfigs.attention;
+    const TrendIcon = trendConfig.icon;
+
+    // 为图表准备数据
+    const revenueChartData = quarterly_data.map(q => ({
+        quarter: q.quarter.replace('20', ''),
+        value: q.revenue_growth,
+    }));
+
+    const depreciationChartData = quarterly_data.map(q => ({
+        quarter: q.quarter.replace('20', ''),
+        value: q.depreciation_growth,
+    }));
 
     return (
         <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-sm border border-indigo-100 p-6">
-            {/* 标题 */}
-            <div className="flex items-center justify-between mb-4">
+            {/* 标题行 */}
+            <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                     <Scale className="w-5 h-5 text-indigo-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">收入 vs 成本 趋势对比</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">挣钱速度 vs 花钱速度</h3>
+                    <button
+                        onClick={() => setShowDefinitions(!showDefinitions)}
+                        className="text-gray-400 hover:text-gray-600"
+                        title="查看定义"
+                    >
+                        <HelpCircle className="w-4 h-4" />
+                    </button>
                 </div>
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full ${trendConfig[trend].bg}`}>
-                    <TrendIcon className={`w-4 h-4 ${trendConfig[trend].color}`} />
-                    <span className={`text-sm font-medium ${trendConfig[trend].color}`}>
-                        {trendConfig[trend].label}
+                <div className={`flex items-center gap-1 px-3 py-1 rounded-full ${trendConfig.bg}`}>
+                    <TrendIcon className={`w-4 h-4 ${trendConfig.color}`} />
+                    <span className={`text-sm font-medium ${trendConfig.color}`}>
+                        {summary.trend_label}
                     </span>
                 </div>
             </div>
 
-            {/* 核心洞察 */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-                {/* 可持续性评分 */}
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-sm text-gray-500 mb-1">可持续性评分</div>
-                    <div className="flex items-baseline gap-2">
-                        <span className={`text-3xl font-bold ${sustainabilityScore >= 70 ? 'text-green-600' :
-                                sustainabilityScore >= 50 ? 'text-yellow-600' : 'text-red-600'
-                            }`}>
-                            {sustainabilityScore}
-                        </span>
-                        <span className="text-gray-400">/100</span>
+            {/* 定义说明 (可折叠) */}
+            {showDefinitions && (
+                <div className="mb-6 p-4 bg-white/80 rounded-lg text-sm text-gray-600 space-y-2">
+                    <p><strong>📈 收入增速</strong>: {definitions.revenue_growth}</p>
+                    <p><strong>📉 成本增速</strong>: {definitions.depreciation_growth}</p>
+                    <p><strong>💡 净差值</strong>: {definitions.net_difference}</p>
+                    <p className="text-xs text-gray-500 mt-2">
+                        数据来源: OpenAI + Anthropic 季度数据 (The Information 估算)
+                    </p>
+                </div>
+            )}
+
+            {/* 核心对比：两列并排 */}
+            <div className="grid grid-cols-2 gap-6 mb-6">
+                {/* 左侧: 收入端 */}
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-green-100">
+                    <div className="flex items-center gap-2 mb-3">
+                        <DollarSign className="w-5 h-5 text-green-500" />
+                        <span className="font-medium text-gray-700">收入增速</span>
                     </div>
-                    <div className="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                            className={`h-full rounded-full ${sustainabilityScore >= 70 ? 'bg-green-500' :
-                                    sustainabilityScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                                }`}
-                            style={{ width: `${sustainabilityScore}%` }}
-                        />
+
+                    {/* 最新值 */}
+                    <div className="flex items-baseline gap-2 mb-4">
+                        <span className={`text-3xl font-bold ${summary.latest_revenue_growth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {summary.latest_revenue_growth > 0 ? '+' : ''}{summary.latest_revenue_growth}%
+                        </span>
+                        <span className="text-sm text-gray-500">/{summary.latest_quarter}</span>
+                    </div>
+
+                    {/* 绝对值 */}
+                    <div className="text-sm text-gray-500 mb-3">
+                        推理收入: ${summary.latest_revenue_b}B / 季度
+                    </div>
+
+                    {/* 增速柱状图 */}
+                    <div className="h-24">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={revenueChartData} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+                                <XAxis dataKey="quarter" tick={{ fontSize: 9, fill: '#9ca3af' }} />
+                                <YAxis hide domain={[0, 'auto']} />
+                                <Tooltip
+                                    formatter={(value: number) => [`${value}%`, '增速']}
+                                    labelFormatter={(label) => `${label}`}
+                                    contentStyle={{ fontSize: '12px' }}
+                                />
+                                <ReferenceLine y={0} stroke="#e5e7eb" />
+                                <Bar dataKey="value" radius={[2, 2, 0, 0]}>
+                                    {revenueChartData.map((entry, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={entry.value >= 0 ? '#22c55e' : '#ef4444'}
+                                        />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
                     </div>
                 </div>
 
-                {/* 挣钱速度 */}
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-sm text-gray-500 mb-1">收入增速 (环比)</div>
-                    <div className="flex items-center gap-2">
-                        <span className={`text-2xl font-bold ${latestData?.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {latestData?.revenueGrowth >= 0 ? '+' : ''}{latestData?.revenueGrowth || 0}%
-                        </span>
-                        {latestData?.revenueGrowth >= 0 ?
-                            <ArrowUpRight className="w-5 h-5 text-green-500" /> :
-                            <ArrowDownRight className="w-5 h-5 text-red-500" />
-                        }
+                {/* 右侧: 成本端 */}
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-red-100">
+                    <div className="flex items-center gap-2 mb-3">
+                        <Server className="w-5 h-5 text-red-500" />
+                        <span className="font-medium text-gray-700">成本增速</span>
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">推理覆盖率变化</div>
-                </div>
 
-                {/* 花钱速度 */}
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-sm text-gray-500 mb-1">成本增速 (环比)</div>
-                    <div className="flex items-center gap-2">
-                        <span className={`text-2xl font-bold ${latestData?.costGrowth <= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {latestData?.costGrowth >= 0 ? '+' : ''}{latestData?.costGrowth || 0}%
+                    {/* 最新值 */}
+                    <div className="flex items-baseline gap-2 mb-4">
+                        <span className={`text-3xl font-bold ${summary.latest_depreciation_growth <= 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                            {summary.latest_depreciation_growth >= 0 ? '+' : ''}{summary.latest_depreciation_growth}%
                         </span>
-                        {latestData?.costGrowth <= 0 ?
-                            <ArrowDownRight className="w-5 h-5 text-green-500" /> :
-                            <ArrowUpRight className="w-5 h-5 text-red-500" />
-                        }
+                        <span className="text-sm text-gray-500">/{summary.latest_quarter}</span>
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">算力成本变化 (负值=省钱)</div>
+
+                    {/* 绝对值 */}
+                    <div className="text-sm text-gray-500 mb-3">
+                        AI资产折旧: ${summary.latest_depreciation_b}B / 季度
+                    </div>
+
+                    {/* 增速柱状图 */}
+                    <div className="h-24">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={depreciationChartData} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+                                <XAxis dataKey="quarter" tick={{ fontSize: 9, fill: '#9ca3af' }} />
+                                <YAxis hide domain={[0, 'auto']} />
+                                <Tooltip
+                                    formatter={(value: number) => [`${value}%`, '增速']}
+                                    labelFormatter={(label) => `${label}`}
+                                    contentStyle={{ fontSize: '12px' }}
+                                />
+                                <ReferenceLine y={0} stroke="#e5e7eb" />
+                                <Bar dataKey="value" radius={[2, 2, 0, 0]}>
+                                    {depreciationChartData.map((entry, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={entry.value >= 20 ? '#f97316' : entry.value >= 10 ? '#facc15' : '#22c55e'}
+                                        />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
 
-            {/* 对比图表 */}
-            <div className="bg-white rounded-lg p-4 shadow-sm">
-                <h4 className="text-sm font-medium text-gray-600 mb-3">
-                    💡 关键问题：挣钱速度是否超过花钱速度？
-                </h4>
-                <div className="h-48">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <ComposedChart data={data}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                            <XAxis dataKey="quarter" tick={{ fill: '#6b7280', fontSize: 10 }} />
-                            <YAxis
-                                yAxisId="left"
-                                domain={[-20, 20]}
-                                tick={{ fill: '#6b7280', fontSize: 10 }}
-                                tickFormatter={(v) => `${v}%`}
-                            />
-                            <Tooltip
-                                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb' }}
-                                formatter={(value: number, name: string) => {
-                                    const labels: Record<string, string> = {
-                                        revenueGrowth: '收入增速',
-                                        costGrowth: '成本增速',
-                                        netMargin: '净差值'
-                                    };
-                                    return [`${value}%`, labels[name] || name];
-                                }}
-                            />
-                            <Legend
-                                formatter={(value) => {
-                                    const labels: Record<string, string> = {
-                                        revenueGrowth: '💰 收入增速',
-                                        costGrowth: '💸 成本增速',
-                                        netMargin: '📊 净差值'
-                                    };
-                                    return labels[value] || value;
-                                }}
-                            />
-                            {/* 净差值柱状图 - 背景 */}
-                            <Bar
-                                yAxisId="left"
-                                dataKey="netMargin"
-                                fill="#818cf8"
-                                opacity={0.3}
-                                radius={[2, 2, 0, 0]}
-                            />
-                            {/* 收入增速线 */}
-                            <Line
-                                yAxisId="left"
-                                type="monotone"
-                                dataKey="revenueGrowth"
-                                stroke="#10b981"
-                                strokeWidth={2}
-                                dot={{ fill: '#10b981', r: 4 }}
-                            />
-                            {/* 成本增速线 */}
-                            <Line
-                                yAxisId="left"
-                                type="monotone"
-                                dataKey="costGrowth"
-                                stroke="#ef4444"
-                                strokeWidth={2}
-                                dot={{ fill: '#ef4444', r: 4 }}
-                            />
-                        </ComposedChart>
-                    </ResponsiveContainer>
+            {/* 净差值汇总 */}
+            <div className="bg-white rounded-xl p-4 shadow-sm">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${summary.latest_net_difference >= 5 ? 'bg-green-100' :
+                                summary.latest_net_difference >= 0 ? 'bg-blue-100' : 'bg-red-100'
+                            }`}>
+                            {summary.latest_net_difference >= 0 ? (
+                                <TrendingUp className={`w-6 h-6 ${summary.latest_net_difference >= 5 ? 'text-green-600' : 'text-blue-600'
+                                    }`} />
+                            ) : (
+                                <TrendingDown className="w-6 h-6 text-red-600" />
+                            )}
+                        </div>
+                        <div>
+                            <div className="text-sm text-gray-500">净差值 (收入增速 - 成本增速)</div>
+                            <div className={`text-2xl font-bold ${summary.latest_net_difference >= 5 ? 'text-green-600' :
+                                    summary.latest_net_difference >= 0 ? 'text-blue-600' : 'text-red-600'
+                                }`}>
+                                {summary.latest_net_difference >= 0 ? '+' : ''}{summary.latest_net_difference}%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-right">
+                        <div className="text-sm text-gray-500">近4季度平均</div>
+                        <div className={`text-xl font-semibold ${summary.avg_net_4q >= 0 ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                            {summary.avg_net_4q >= 0 ? '+' : ''}{summary.avg_net_4q}%
+                        </div>
+                    </div>
                 </div>
 
                 {/* 解读 */}
-                <div className="mt-4 p-3 bg-indigo-50 rounded-lg">
-                    <div className="flex items-start gap-2">
-                        <span className="text-lg">📈</span>
-                        <div className="text-sm text-gray-700">
-                            <strong>解读：</strong>
-                            {latestData && latestData.netMargin > 0 ? (
-                                <span className="text-green-700">
-                                    绿线(收入)在红线(成本)上方 → <strong>挣钱比花钱快</strong>，
-                                    净差值 +{latestData.netMargin}%，投资正在回本！
-                                </span>
-                            ) : latestData && latestData.netMargin < 0 ? (
-                                <span className="text-red-700">
-                                    红线(成本)在绿线(收入)上方 → <strong>花钱比挣钱快</strong>，
-                                    净差值 {latestData.netMargin}%，需警惕投资回报！
-                                </span>
-                            ) : (
-                                <span className="text-yellow-700">
-                                    收入与成本增速接近 → <strong>盈亏平衡</strong>，保持观察
-                                </span>
-                            )}
-                        </div>
-                    </div>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                    <p className="text-sm text-gray-600">
+                        {summary.latest_net_difference >= 5 ? (
+                            <>
+                                <span className="text-green-600 font-medium">✓ 收入增速 ({summary.latest_revenue_growth}%) 显著超过成本增速 ({summary.latest_depreciation_growth}%)</span>
+                                <br />
+                                <span className="text-gray-500">→ AI 投资正在产生正向回报，商业模式可持续</span>
+                            </>
+                        ) : summary.latest_net_difference >= 0 ? (
+                            <>
+                                <span className="text-blue-600 font-medium">○ 收入增速 ({summary.latest_revenue_growth}%) 略高于成本增速 ({summary.latest_depreciation_growth}%)</span>
+                                <br />
+                                <span className="text-gray-500">→ 投资回收期较长，需持续观察</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="text-red-600 font-medium">⚠ 成本增速 ({summary.latest_depreciation_growth}%) 超过收入增速 ({summary.latest_revenue_growth}%)</span>
+                                <br />
+                                <span className="text-gray-500">→ 花钱比挣钱快，需关注投资可持续性</span>
+                            </>
+                        )}
+                    </p>
                 </div>
             </div>
         </div>

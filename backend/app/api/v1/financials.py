@@ -380,3 +380,129 @@ async def get_gpu_efficiency() -> FinancialsResponse:
             "updated_at": datetime.utcnow().isoformat(),
         }
     )
+
+
+@router.get("/growth-comparison")
+async def get_growth_comparison() -> FinancialsResponse:
+    """
+    收入增速 vs 资本支出增速 对比
+    
+    收入端 = 大模型公司 (OpenAI/Anthropic) 的推理收入季度增速
+    成本端 = 大模型公司的 AI 资产折旧季度增速
+    
+    核心问题: 挣钱速度是否超过花钱速度？
+    """
+    # 加载配置
+    inference_config = load_inference_coverage_config()
+    
+    # === 收入端: 季度推理收入 ===
+    revenue_series = []
+    depreciation_series = []
+    
+    # 聚合所有公司的数据
+    all_quarters = set()
+    for company_data in inference_config.get("companies", {}).values():
+        history = company_data.get("history", {})
+        all_quarters.update(history.keys())
+    
+    sorted_quarters = sorted(all_quarters)
+    
+    for quarter in sorted_quarters:
+        total_revenue = 0
+        total_depreciation = 0
+        
+        for company_key, company_data in inference_config.get("companies", {}).items():
+            history = company_data.get("history", {})
+            if quarter in history:
+                total_revenue += history[quarter].get("inference_revenue_b", 0)
+                total_depreciation += history[quarter].get("asset_depreciation_b", 0)
+        
+        revenue_series.append({
+            "quarter": quarter,
+            "value": round(total_revenue, 2),
+            "label": "推理收入 ($B)"
+        })
+        depreciation_series.append({
+            "quarter": quarter,
+            "value": round(total_depreciation, 2),
+            "label": "AI资产折旧 ($B)"
+        })
+    
+    # 计算增速
+    def calc_growth_rates(series):
+        rates = []
+        for i, item in enumerate(series):
+            if i == 0:
+                rates.append({**item, "growth_rate": 0})
+            else:
+                prev = series[i - 1]["value"]
+                curr = item["value"]
+                rate = round((curr - prev) / prev * 100, 1) if prev > 0 else 0
+                rates.append({**item, "growth_rate": rate})
+        return rates
+    
+    revenue_with_growth = calc_growth_rates(revenue_series)
+    depreciation_with_growth = calc_growth_rates(depreciation_series)
+    
+    # 计算净差值（收入增速 - 折旧增速）
+    comparison = []
+    for i, quarter in enumerate(sorted_quarters):
+        rev_rate = revenue_with_growth[i]["growth_rate"]
+        dep_rate = depreciation_with_growth[i]["growth_rate"]
+        net = round(rev_rate - dep_rate, 1)
+        
+        comparison.append({
+            "quarter": quarter,
+            "revenue_b": revenue_series[i]["value"],
+            "revenue_growth": rev_rate,
+            "depreciation_b": depreciation_series[i]["value"],
+            "depreciation_growth": dep_rate,
+            "net_difference": net,
+            "is_sustainable": net >= 0,
+        })
+    
+    # 最新数据汇总
+    latest = comparison[-1] if comparison else {}
+    recent_4q = comparison[-4:] if len(comparison) >= 4 else comparison
+    avg_net = round(sum(c["net_difference"] for c in recent_4q) / len(recent_4q), 1) if recent_4q else 0
+    
+    # 判断趋势
+    if avg_net > 5:
+        trend = "strong_growth"
+        trend_label = "收入增速显著超过成本"
+    elif avg_net > 0:
+        trend = "sustainable"
+        trend_label = "可持续发展中"
+    elif avg_net > -5:
+        trend = "attention"
+        trend_label = "需要关注"
+    else:
+        trend = "risk"
+        trend_label = "存在风险"
+    
+    return FinancialsResponse(
+        success=True,
+        data={
+            "title": "收入增速 vs 成本增速",
+            "definitions": {
+                "revenue": "大模型公司 (OpenAI/Anthropic) 季度推理收入总和",
+                "depreciation": "大模型公司 AI 资产季度折旧总和",
+                "revenue_growth": "推理收入的季度环比增长率 (%)",
+                "depreciation_growth": "AI资产折旧的季度环比增长率 (%)",
+                "net_difference": "收入增速 - 成本增速 (正值=挣钱更快)"
+            },
+            "summary": {
+                "latest_quarter": latest.get("quarter", ""),
+                "latest_revenue_b": latest.get("revenue_b", 0),
+                "latest_depreciation_b": latest.get("depreciation_b", 0),
+                "latest_revenue_growth": latest.get("revenue_growth", 0),
+                "latest_depreciation_growth": latest.get("depreciation_growth", 0),
+                "latest_net_difference": latest.get("net_difference", 0),
+                "avg_net_4q": avg_net,
+                "trend": trend,
+                "trend_label": trend_label,
+            },
+            "quarterly_data": comparison,
+            "updated_at": datetime.utcnow().isoformat(),
+        }
+    )
