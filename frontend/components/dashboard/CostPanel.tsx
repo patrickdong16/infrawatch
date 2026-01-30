@@ -130,7 +130,7 @@ export default function CostPanel() {
                     <LineChart data={data.pflops_series}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis dataKey="quarter" tick={{ fill: '#6b7280', fontSize: 10 }} />
-                        <YAxis domain={[80, 180]} tick={{ fill: '#6b7280', fontSize: 10 }} />
+                        <YAxis domain={[80, 260]} tick={{ fill: '#6b7280', fontSize: 10 }} />
                         <Tooltip
                             contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb' }}
                             formatter={(value: number) => [value.toFixed(1), '效率指数']}
