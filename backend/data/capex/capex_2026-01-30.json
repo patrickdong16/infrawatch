@@ -1,0 +1,601 @@
+{
+  "timestamp": "2026-01-30T20:29:15.464714",
+  "companies": {
+    "Microsoft": [
+      {
+        "company": "Microsoft",
+        "period": "2010-FY",
+        "total_revenue_b": 16.04,
+        "capex_b": 1.98,
+        "capital_intensity_pct": 12.3,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866114"
+      },
+      {
+        "company": "Microsoft",
+        "period": "2010-Q1",
+        "total_revenue_b": 12.92,
+        "capex_b": 0.43,
+        "capital_intensity_pct": 3.4,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866132"
+      },
+      {
+        "company": "Microsoft",
+        "period": "2010-Q2",
+        "total_revenue_b": 19.02,
+        "capex_b": 0.38,
+        "capital_intensity_pct": 2.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866137"
+      },
+      {
+        "company": "Microsoft",
+        "period": "2010-Q3",
+        "total_revenue_b": 14.5,
+        "capex_b": 0.41,
+        "capital_intensity_pct": 2.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866140"
+      },
+      {
+        "company": "Microsoft",
+        "period": "2011-Q1",
+        "total_revenue_b": 16.2,
+        "capex_b": 0.56,
+        "capital_intensity_pct": 3.5,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866143"
+      },
+      {
+        "company": "Microsoft",
+        "period": "2011-Q2",
+        "total_revenue_b": 19.95,
+        "capex_b": 0.49,
+        "capital_intensity_pct": 2.5,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
+        "updated_at": "2026-01-30T20:29:07.866146"
+      }
+    ],
+    "Alphabet": [
+      {
+        "company": "Alphabet",
+        "period": "2015-FY",
+        "total_revenue_b": 74.99,
+        "capex_b": 9.91,
+        "capital_intensity_pct": 13.2,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455744"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2015-Q3",
+        "total_revenue_b": 18.68,
+        "capex_b": 7.82,
+        "capital_intensity_pct": 41.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455758"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2016-FY",
+        "total_revenue_b": 90.27,
+        "capex_b": 10.21,
+        "capital_intensity_pct": 11.3,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455762"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2016-Q1",
+        "total_revenue_b": 20.26,
+        "capex_b": 2.43,
+        "capital_intensity_pct": 12.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455765"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2016-Q2",
+        "total_revenue_b": 21.5,
+        "capex_b": 2.12,
+        "capital_intensity_pct": 9.9,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455768"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2016-Q3",
+        "total_revenue_b": 22.45,
+        "capex_b": 2.55,
+        "capital_intensity_pct": 11.4,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455771"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2017-FY",
+        "total_revenue_b": 110.86,
+        "capex_b": 13.18,
+        "capital_intensity_pct": 11.9,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455775"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2017-Q1",
+        "total_revenue_b": 24.75,
+        "capex_b": 2.51,
+        "capital_intensity_pct": 10.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455778"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2017-Q2",
+        "total_revenue_b": 26.01,
+        "capex_b": 2.83,
+        "capital_intensity_pct": 10.9,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455780"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2017-Q3",
+        "total_revenue_b": 27.77,
+        "capex_b": 3.54,
+        "capital_intensity_pct": 12.7,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455783"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2018-Q1",
+        "total_revenue_b": 31.15,
+        "capex_b": 7.3,
+        "capital_intensity_pct": 23.4,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455786"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2018-Q2",
+        "total_revenue_b": 32.66,
+        "capex_b": 5.48,
+        "capital_intensity_pct": 16.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455788"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2018-Q3",
+        "total_revenue_b": 33.74,
+        "capex_b": 5.28,
+        "capital_intensity_pct": 15.7,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455791"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2019-Q1",
+        "total_revenue_b": 36.34,
+        "capex_b": 4.64,
+        "capital_intensity_pct": 12.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455794"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2020-FY",
+        "total_revenue_b": 182.53,
+        "capex_b": 22.28,
+        "capital_intensity_pct": 12.2,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455797"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2021-FY",
+        "total_revenue_b": 257.64,
+        "capex_b": 24.64,
+        "capital_intensity_pct": 9.6,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455799"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2021-Q1",
+        "total_revenue_b": 55.31,
+        "capex_b": 5.94,
+        "capital_intensity_pct": 10.7,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455802"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2021-Q2",
+        "total_revenue_b": 61.88,
+        "capex_b": 11.44,
+        "capital_intensity_pct": 18.5,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455805"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2025-Q2",
+        "total_revenue_b": 96.43,
+        "capex_b": 39.64,
+        "capital_intensity_pct": 41.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455808"
+      },
+      {
+        "company": "Alphabet",
+        "period": "2025-Q3",
+        "total_revenue_b": 102.35,
+        "capex_b": 63.6,
+        "capital_intensity_pct": 62.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
+        "updated_at": "2026-01-30T20:29:10.455811"
+      }
+    ],
+    "Amazon": [],
+    "Meta": [
+      {
+        "company": "Meta",
+        "period": "2012-FY",
+        "total_revenue_b": 5.09,
+        "capex_b": 1.24,
+        "capital_intensity_pct": 24.3,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961018"
+      },
+      {
+        "company": "Meta",
+        "period": "2012-Q2",
+        "total_revenue_b": 1.18,
+        "capex_b": 0.87,
+        "capital_intensity_pct": 73.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961031"
+      },
+      {
+        "company": "Meta",
+        "period": "2012-Q3",
+        "total_revenue_b": 1.26,
+        "capex_b": 1.04,
+        "capital_intensity_pct": 82.2,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961035"
+      },
+      {
+        "company": "Meta",
+        "period": "2013-FY",
+        "total_revenue_b": 7.87,
+        "capex_b": 1.36,
+        "capital_intensity_pct": 17.3,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961038"
+      },
+      {
+        "company": "Meta",
+        "period": "2013-Q1",
+        "total_revenue_b": 1.46,
+        "capex_b": 0.33,
+        "capital_intensity_pct": 22.4,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961042"
+      },
+      {
+        "company": "Meta",
+        "period": "2013-Q2",
+        "total_revenue_b": 1.81,
+        "capex_b": 0.59,
+        "capital_intensity_pct": 32.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961045"
+      },
+      {
+        "company": "Meta",
+        "period": "2013-Q3",
+        "total_revenue_b": 2.02,
+        "capex_b": 0.88,
+        "capital_intensity_pct": 43.6,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961048"
+      },
+      {
+        "company": "Meta",
+        "period": "2014-FY",
+        "total_revenue_b": 12.47,
+        "capex_b": 1.83,
+        "capital_intensity_pct": 14.7,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961051"
+      },
+      {
+        "company": "Meta",
+        "period": "2014-Q1",
+        "total_revenue_b": 2.5,
+        "capex_b": 0.36,
+        "capital_intensity_pct": 14.5,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961054"
+      },
+      {
+        "company": "Meta",
+        "period": "2014-Q2",
+        "total_revenue_b": 2.91,
+        "capex_b": 0.83,
+        "capital_intensity_pct": 28.6,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961056"
+      },
+      {
+        "company": "Meta",
+        "period": "2014-Q3",
+        "total_revenue_b": 3.2,
+        "capex_b": 1.31,
+        "capital_intensity_pct": 41.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961059"
+      },
+      {
+        "company": "Meta",
+        "period": "2015-FY",
+        "total_revenue_b": 17.93,
+        "capex_b": 2.52,
+        "capital_intensity_pct": 14.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961062"
+      },
+      {
+        "company": "Meta",
+        "period": "2015-Q1",
+        "total_revenue_b": 3.54,
+        "capex_b": 0.5,
+        "capital_intensity_pct": 14.2,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961065"
+      },
+      {
+        "company": "Meta",
+        "period": "2015-Q2",
+        "total_revenue_b": 4.04,
+        "capex_b": 1.05,
+        "capital_intensity_pct": 26.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961068"
+      },
+      {
+        "company": "Meta",
+        "period": "2015-Q3",
+        "total_revenue_b": 4.5,
+        "capex_b": 1.83,
+        "capital_intensity_pct": 40.7,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961071"
+      },
+      {
+        "company": "Meta",
+        "period": "2016-FY",
+        "total_revenue_b": 27.64,
+        "capex_b": 4.49,
+        "capital_intensity_pct": 16.2,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961074"
+      },
+      {
+        "company": "Meta",
+        "period": "2016-Q1",
+        "total_revenue_b": 5.38,
+        "capex_b": 1.13,
+        "capital_intensity_pct": 21.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961076"
+      },
+      {
+        "company": "Meta",
+        "period": "2016-Q2",
+        "total_revenue_b": 6.44,
+        "capex_b": 2.13,
+        "capital_intensity_pct": 33.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961079"
+      },
+      {
+        "company": "Meta",
+        "period": "2016-Q3",
+        "total_revenue_b": 7.01,
+        "capex_b": 3.22,
+        "capital_intensity_pct": 46.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961082"
+      },
+      {
+        "company": "Meta",
+        "period": "2017-FY",
+        "total_revenue_b": 40.65,
+        "capex_b": 6.73,
+        "capital_intensity_pct": 16.6,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961085"
+      },
+      {
+        "company": "Meta",
+        "period": "2017-Q1",
+        "total_revenue_b": 8.03,
+        "capex_b": 1.27,
+        "capital_intensity_pct": 15.8,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961088"
+      },
+      {
+        "company": "Meta",
+        "period": "2017-Q2",
+        "total_revenue_b": 9.32,
+        "capex_b": 2.71,
+        "capital_intensity_pct": 29.1,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961091"
+      },
+      {
+        "company": "Meta",
+        "period": "2017-Q3",
+        "total_revenue_b": 10.33,
+        "capex_b": 4.47,
+        "capital_intensity_pct": 43.3,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961093"
+      },
+      {
+        "company": "Meta",
+        "period": "2018-Q1",
+        "total_revenue_b": 11.97,
+        "capex_b": 2.81,
+        "capital_intensity_pct": 23.5,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961096"
+      },
+      {
+        "company": "Meta",
+        "period": "2018-Q2",
+        "total_revenue_b": 13.23,
+        "capex_b": 6.27,
+        "capital_intensity_pct": 47.4,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961099"
+      },
+      {
+        "company": "Meta",
+        "period": "2018-Q3",
+        "total_revenue_b": 13.73,
+        "capex_b": 9.61,
+        "capital_intensity_pct": 70.0,
+        "ai_capex_estimate_b": null,
+        "source": "SEC XBRL",
+        "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
+        "updated_at": "2026-01-30T20:29:14.961102"
+      }
+    ]
+  },
+  "summary": {
+    "Microsoft": {
+      "latest_period": "2011-Q2",
+      "avg_capital_intensity_4q": 2.7,
+      "total_quarters": 6
+    },
+    "Alphabet": {
+      "latest_period": "2025-Q3",
+      "avg_capital_intensity_4q": 33.1,
+      "total_quarters": 20
+    },
+    "Meta": {
+      "latest_period": "2018-Q3",
+      "avg_capital_intensity_4q": 46.0,
+      "total_quarters": 26
+    }
+  }
+}
