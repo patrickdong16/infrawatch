@@ -3,7 +3,6 @@
 import { StageGauge } from "@/components/dashboard/StageGauge";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
-import { PriceSummary } from "@/components/dashboard/PriceSummary";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
 import AIROICard from "@/components/dashboard/AIROICard";
 import GPUEfficiencyCard from "@/components/dashboard/GPUEfficiencyCard";
@@ -75,36 +74,7 @@ export default function DashboardPage() {
                   yearOverYear={metric.yearOverYear}
                   showChart={true}
                 />
-              )) || (
-                  <>
-                    <MetricCard
-                      title="M01 覆盖率"
-                      value="0.24 - 0.36"
-                      status="warning"
-                      description="过渡期"
-                      weekOverWeek={8}
-                      showChart={true}
-                    />
-                    <MetricCard
-                      title="B板块价格指数"
-                      value="$2.73"
-                      unit="/M tokens"
-                      status="good"
-                      weekOverWeek={-5.2}
-                      monthOverMonth={-8.5}
-                      showChart={true}
-                    />
-                    <MetricCard
-                      title="C板块价格指数"
-                      value="$2.49"
-                      unit="/hour"
-                      status="neutral"
-                      weekOverWeek={-2.1}
-                      monthOverMonth={-4.0}
-                      showChart={true}
-                    />
-                  </>
-                )}
+              ))}
             </div>
           </div>
 
@@ -114,11 +84,8 @@ export default function DashboardPage() {
           {/* AI 投资回报分析 (核心) */}
           <AIROICard />
 
-          {/* 成本指数 + 信号 */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Price summary */}
-            <PriceSummary />
-
+          {/* 成本监测 + 信号 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* GPU 算力成本效率 */}
             <GPUEfficiencyCard />
 
