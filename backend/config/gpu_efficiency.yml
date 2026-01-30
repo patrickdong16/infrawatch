@@ -36,6 +36,18 @@ gpu_specs:
     fp16_tflops: 733
     memory_gb: 48
     memory_bandwidth_tb: 0.864
+    
+  B100:
+    name: "NVIDIA B100 192GB HBM3e"
+    fp16_tflops: 3500  # FP16 TFLOPS (Blackwell architecture)
+    memory_gb: 192
+    memory_bandwidth_tb: 8.0
+    
+  B200:
+    name: "NVIDIA B200 192GB HBM3e"
+    fp16_tflops: 4500  # FP16 TFLOPS (Blackwell Ultra)
+    memory_gb: 192
+    memory_bandwidth_tb: 8.0
 
 # 历史价格数据 ($/hour)
 # 来源: Lambda Labs, RunPod, CoreWeave 公开价格
@@ -71,6 +83,35 @@ price_history:
     A100_SXM: 0.89
     L40S: 0.59
     H200: 3.49
+    
+  "2025-Q2":
+    H100_SXM: 1.99
+    H100_PCIe: 1.49
+    A100_SXM: 0.79
+    L40S: 0.49
+    H200: 3.29
+    B100: 4.49
+    source: "Lambda Labs, CoreWeave"
+    
+  "2025-Q3":
+    H100_SXM: 1.89
+    H100_PCIe: 1.39
+    A100_SXM: 0.69
+    L40S: 0.45
+    H200: 3.09
+    B100: 4.29
+    B200: 5.49
+    source: "Lambda Labs, CoreWeave"
+    
+  "2025-Q4":
+    H100_SXM: 1.79
+    H100_PCIe: 1.29
+    A100_SXM: 0.59
+    L40S: 0.39
+    H200: 2.89
+    B100: 3.99
+    B200: 4.99
+    source: "Lambda Labs, CoreWeave, collected"
 
 # 标准推理任务定义 (用于成本比较)
 benchmark_task:
@@ -84,6 +125,8 @@ benchmark_task:
     A100_SXM: 80
     H200: 220
     L40S: 60
+    B100: 280
+    B200: 350
 
 # 算力成本效率指数计算方法
 index_method: "performance_normalized"  # 或 "task_cost"
