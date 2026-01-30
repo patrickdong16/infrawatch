@@ -5,7 +5,8 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
 import { PriceSummary } from "@/components/dashboard/PriceSummary";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
-import { AISustainabilityCard } from "@/components/dashboard/AISustainabilityCard";
+import AIROICard from "@/components/dashboard/AIROICard";
+import GPUEfficiencyCard from "@/components/dashboard/GPUEfficiencyCard";
 import { useSummary } from "@/lib/api-hooks";
 import { RefreshCw } from "lucide-react";
 
@@ -110,13 +111,16 @@ export default function DashboardPage() {
           {/* Supply chain alert */}
           <SupplyChainAlert />
 
-          {/* Price summary, financials, and signals */}
+          {/* AI 投资回报分析 (核心) */}
+          <AIROICard />
+
+          {/* 成本指数 + 信号 */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Price summary */}
             <PriceSummary />
 
-            {/* AI Sustainability Scorecard */}
-            <AISustainabilityCard />
+            {/* GPU 算力成本效率 */}
+            <GPUEfficiencyCard />
 
             {/* Recent signals */}
             <SignalFeed />

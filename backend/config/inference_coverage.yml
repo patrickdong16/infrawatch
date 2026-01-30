@@ -1,0 +1,79 @@
+# 推理资产覆盖率配置
+# 大模型公司的推理业务投资回报追踪
+
+# 定义
+# 推理资产覆盖率 = AI推理收入 / AI资产年化折旧
+# > 1.0 = 推理收入足以覆盖资产折旧 (可持续)
+# < 1.0 = 需要其他业务补贴 (待观察)
+
+# 估算数据来源:
+# - OpenAI: 公开报道估算
+# - Anthropic: 融资报道估算
+# - Microsoft (Azure AI): 财报分拆估算
+# - Google (Vertex AI): 财报分拆估算
+
+companies:
+  openai:
+    name: "OpenAI"
+    category: "大模型公司"
+    history:
+      "2024-Q1":
+        inference_revenue_b: 0.8  # 十亿美元
+        asset_depreciation_b: 1.2
+        coverage_ratio: 0.67
+      "2024-Q2":
+        inference_revenue_b: 1.0
+        asset_depreciation_b: 1.4
+        coverage_ratio: 0.71
+      "2024-Q3":
+        inference_revenue_b: 1.4
+        asset_depreciation_b: 1.6
+        coverage_ratio: 0.88
+      "2024-Q4":
+        inference_revenue_b: 2.0
+        asset_depreciation_b: 2.0
+        coverage_ratio: 1.00
+      "2025-Q1":
+        inference_revenue_b: 2.5
+        asset_depreciation_b: 2.4
+        coverage_ratio: 1.04
+        
+  anthropic:
+    name: "Anthropic"
+    category: "大模型公司"
+    history:
+      "2024-Q1":
+        inference_revenue_b: 0.15
+        asset_depreciation_b: 0.3
+        coverage_ratio: 0.50
+      "2024-Q2":
+        inference_revenue_b: 0.25
+        asset_depreciation_b: 0.35
+        coverage_ratio: 0.71
+      "2024-Q3":
+        inference_revenue_b: 0.4
+        asset_depreciation_b: 0.4
+        coverage_ratio: 1.00
+      "2024-Q4":
+        inference_revenue_b: 0.6
+        asset_depreciation_b: 0.5
+        coverage_ratio: 1.20
+      "2025-Q1":
+        inference_revenue_b: 0.8
+        asset_depreciation_b: 0.6
+        coverage_ratio: 1.33
+
+# 行业平均
+industry_average:
+  "2024-Q1": 0.60
+  "2024-Q2": 0.72
+  "2024-Q3": 0.90
+  "2024-Q4": 1.05
+  "2025-Q1": 1.15
+
+# 趋势解读
+trend_interpretation:
+  improving: "覆盖率持续上升，投资逐步可回收"
+  stable: "覆盖率稳定在1.0附近，盈亏平衡"
+  declining: "覆盖率下降，需关注投资回报"
+  unsustainable: "覆盖率长期<0.5，可能不可持续"

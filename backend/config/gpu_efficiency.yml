@@ -1,0 +1,94 @@
+# GPU 算力成本效率配置
+# 性能归一化法：追踪每 PFLOPS 单价和每百万 Token 成本
+
+# 基准期: 2024 Q1
+base_period: "2024-Q1"
+base_index: 100
+
+# GPU 性能规格 (用于归一化)
+gpu_specs:
+  H100_SXM:
+    name: "NVIDIA H100 SXM 80GB"
+    fp16_tflops: 1979  # FP16 TFLOPS
+    memory_gb: 80
+    memory_bandwidth_tb: 3.35
+    
+  H100_PCIe:
+    name: "NVIDIA H100 PCIe 80GB"
+    fp16_tflops: 1513
+    memory_gb: 80
+    memory_bandwidth_tb: 2.0
+    
+  A100_SXM:
+    name: "NVIDIA A100 SXM 80GB"
+    fp16_tflops: 624
+    memory_gb: 80
+    memory_bandwidth_tb: 2.0
+    
+  H200:
+    name: "NVIDIA H200 141GB HBM3e"
+    fp16_tflops: 1979
+    memory_gb: 141
+    memory_bandwidth_tb: 4.8
+    
+  L40S:
+    name: "NVIDIA L40S"
+    fp16_tflops: 733
+    memory_gb: 48
+    memory_bandwidth_tb: 0.864
+
+# 历史价格数据 ($/hour)
+# 来源: Lambda Labs, RunPod, CoreWeave 公开价格
+price_history:
+  "2024-Q1":
+    H100_SXM: 2.49
+    H100_PCIe: 1.99
+    A100_SXM: 1.29
+    L40S: 0.99
+    
+  "2024-Q2":
+    H100_SXM: 2.39
+    H100_PCIe: 1.89
+    A100_SXM: 1.19
+    L40S: 0.89
+    
+  "2024-Q3":
+    H100_SXM: 2.29
+    H100_PCIe: 1.79
+    A100_SXM: 1.09
+    L40S: 0.79
+    
+  "2024-Q4":
+    H100_SXM: 2.19
+    H100_PCIe: 1.69
+    A100_SXM: 0.99
+    L40S: 0.69
+    H200: 3.99
+    
+  "2025-Q1":
+    H100_SXM: 2.09
+    H100_PCIe: 1.59
+    A100_SXM: 0.89
+    L40S: 0.59
+    H200: 3.49
+
+# 标准推理任务定义 (用于成本比较)
+benchmark_task:
+  name: "Llama-70B 推理 100万 tokens"
+  model: "Llama-2-70B"
+  tokens: 1000000
+  # 各 GPU 吞吐量 (tokens/sec)
+  throughput:
+    H100_SXM: 180
+    H100_PCIe: 140
+    A100_SXM: 80
+    H200: 220
+    L40S: 60
+
+# 算力成本效率指数计算方法
+index_method: "performance_normalized"  # 或 "task_cost"
+
+# 指数说明
+# - 100 = 2024 Q1 基准
+# - >100 = 成本效率提升 (更便宜)
+# - <100 = 成本效率下降 (更贵)
