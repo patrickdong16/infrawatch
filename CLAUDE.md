@@ -1,8 +1,8 @@
 # InfraWatch - Claude 开发规范
 
 > **项目代号**: InfraWatch  
-> **版本**: v1.0  
-> **日期**: 2026-01-29
+> **版本**: v1.3  
+> **日期**: 2026-01-30
 
 ---
 
@@ -92,11 +92,12 @@ infrawatch/
 │   │   ├── api/v1/       # REST API
 │   │   │   ├── data.py            # 通用数据端点
 │   │   │   ├── prices.py          # 价格 CRUD
-│   │   │   ├── price_indices.py   # [新增] 厂商价格指数
-│   │   │   ├── financials.py      # [新增] EODHD财务数据
+│   │   │   ├── price_indices.py   # 厂商价格指数
+│   │   │   ├── financials.py      # EODHD财务数据 + growth-comparison API
 │   │   │   ├── signals.py         # 信号中心
 │   │   │   ├── stage.py           # 阶段判定
-│   │   │   └── supply_chain.py    # 供应链
+│   │   │   ├── supply_chain.py    # 供应链
+│   │   │   └── collected_data.py  # GPU价格/新闻采集
 │   │   ├── domain/       # 业务逻辑 (stage_engine, signal_detector)
 │   │   ├── repositories/ # 数据访问
 │   │   │   └── price_history.py   # 价格历史 + 趋势计算
@@ -105,17 +106,23 @@ infrawatch/
 │   │   └── services/     # 服务层
 │   ├── config/           # YAML 配置
 │   │   ├── supply_chain.yml       # 供应链历史数据
-│   │   └── cloud_revenue.yml      # [新增] Cloud分部收入 (季度更新)
+│   │   ├── cloud_revenue.yml      # Cloud分部收入 (季度更新)
+│   │   ├── inference_coverage.yml # [v1.3] 推理覆盖率数据 (OpenAI/Anthropic)
+│   │   └── gpu_efficiency.yml     # [v1.3] GPU效率指数数据
 │   ├── spiders/          # 爬虫模块
 │   └── workers/
 │       └── tasks/        # Celery 任务
 └── frontend/              # Next.js 前端
     ├── app/              # 页面
-    │   ├── page.tsx               # Dashboard
+    │   ├── page.tsx               # Dashboard (含 ROIComparisonCard)
     │   └── prices/page.tsx        # 价格监测 (含厂商卡片)
     ├── components/       # 组件
     │   └── dashboard/
-    │       ├── AISustainabilityCard.tsx   # [新增] 可持续性评分卡
+    │       ├── AISustainabilityCard.tsx   # 可持续性评分卡
+    │       ├── ROIComparisonCard.tsx      # [v1.3] 收入vs成本对比
+    │       ├── RevenuePanel.tsx           # 收入端面板
+    │       ├── CostPanel.tsx              # 成本端面板
+    │       ├── HeroCard.tsx               # 核心指标卡
     │       ├── MetricCard.tsx
     │       ├── PriceSummary.tsx
     │       ├── SignalFeed.tsx
@@ -124,6 +131,7 @@ infrawatch/
     └── lib/              # 工具库
         └── api-hooks.ts           # SWR hooks
 ```
+
 
 ### 3.3 API 响应格式 (强制)
 
@@ -238,6 +246,93 @@ if trends["weekOverWeek"] is None:
     trends["weekOverWeek"] = round(random.uniform(-5.0, 0.5), 1)
     item["trend_source"] = "simulated"
 ```
+
+### 4.5 代码模式 (v1.3 新增)
+
+#### 增速对比 API 模式
+
+```python
+# backend/app/api/v1/financials.py
+# GET /api/v1/financials/growth-comparison
+
+@router.get("/growth-comparison")
+async def get_growth_comparison() -> FinancialsResponse:
+    """
+    收入增速 vs 成本增速 对比
+    
+    收入端 = 大模型公司 (OpenAI/Anthropic) 的推理收入季度增速
+    成本端 = 大模型公司的 AI 资产折旧季度增速
+    """
+    # 计算环比增速
+    def calc_growth_rates(series):
+        rates = []
+        for i, item in enumerate(series):
+            if i == 0:
+                rates.append({**item, "growth_rate": 0})
+            else:
+                prev = series[i - 1]["value"]
+                curr = item["value"]
+                rate = round((curr - prev) / prev * 100, 1) if prev > 0 else 0
+                rates.append({**item, "growth_rate": rate})
+        return rates
+```
+
+#### 并排布局图表组件模式
+
+```tsx
+// frontend/components/dashboard/ROIComparisonCard.tsx
+// 左右并排对比布局
+<div className="grid grid-cols-2 gap-6">
+    {/* 左侧: 收入端 */}
+    <div className="rounded-xl p-5 bg-gradient-to-br from-emerald-50 to-green-50">
+        {/* 面积图 */}
+        <AreaChart data={chartData}>
+            <defs>
+                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                </linearGradient>
+            </defs>
+            <Area type="monotone" dataKey="revenue" fill="url(#revenueGradient)" />
+        </AreaChart>
+    </div>
+    
+    {/* 右侧: 成本端 */}
+    <div className="rounded-xl p-5 bg-gradient-to-br from-orange-50 to-amber-50">
+        {/* 类似结构 */}
+    </div>
+</div>
+```
+
+#### 趋势标注模式 (必须标明比较基准)
+
+```tsx
+// 趋势值 - 明确标注比较基准
+<div className="p-3 bg-white/60 rounded-lg">
+    <div className="flex items-baseline justify-between">
+        <span className="text-2xl font-bold text-emerald-600">
+            +{growth_rate}%
+        </span>
+        <div className="text-right">
+            <div className="text-xs text-gray-500">环比增速</div>
+            <div className="text-xs text-gray-400">vs {prevQuarter}</div>
+        </div>
+    </div>
+</div>
+```
+
+#### Y轴自适应模式
+
+```tsx
+// 图表 Y 轴必须使用 'auto' 或根据数据范围动态设置
+// ❌ 错误: <YAxis domain={[80, 180]} />  // 硬编码导致数据被截断
+// ✅ 正确: <YAxis domain={['auto', 'auto']} />
+// ✅ 正确: <YAxis domain={[min - buffer, max + buffer]} />
+
+// CostPanel.tsx 中的修复示例
+<YAxis domain={[80, 260]} />  // 扩展范围以容纳更大数据
+```
+
 
 ---
 
