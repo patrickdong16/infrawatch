@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Cpu, Zap, Server } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import MetricTooltip from '@/components/ui/MetricTooltip';
 
 interface GPUEfficiencyData {
     current: {
@@ -71,7 +72,9 @@ export default function CostPanel() {
                 <div className="bg-purple-50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Zap className="w-4 h-4 text-yellow-600" />
-                        <span className="text-sm font-medium text-gray-700">PFLOPS 效率</span>
+                        <MetricTooltip content="每PFLOPS算力的云端租赁成本效率。以2024Q1为基准(=100)，指数越高表示同等性能的成本越低。">
+                            <span className="text-sm font-medium text-gray-700">PFLOPS 效率</span>
+                        </MetricTooltip>
                     </div>
                     <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-gray-900">{data.current.pflops_index.toFixed(0)}</span>
@@ -87,7 +90,9 @@ export default function CostPanel() {
                 <div className="bg-cyan-50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Cpu className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-medium text-gray-700">任务成本效率</span>
+                        <MetricTooltip content="执行标准AI推理任务(如1M tokens)的成本效率。考虑了GPU利用率和模型效率的综合指标。">
+                            <span className="text-sm font-medium text-gray-700">任务成本效率</span>
+                        </MetricTooltip>
                     </div>
                     <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-gray-900">{data.current.task_index.toFixed(0)}</span>

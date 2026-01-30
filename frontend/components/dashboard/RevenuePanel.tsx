@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Building2, Cloud, DollarSign } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Legend } from 'recharts';
+import MetricTooltip from '@/components/ui/MetricTooltip';
 
 interface InferenceCompany {
     company: string;
@@ -83,7 +84,9 @@ export default function RevenuePanel() {
                 <div className="bg-green-50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Building2 className="w-4 h-4 text-purple-600" />
-                        <span className="text-sm font-medium text-gray-700">推理覆盖率</span>
+                        <MetricTooltip content="AI模型公司(如OpenAI/Anthropic)的推理收入能否覆盖GPU等AI资产的年化折旧成本。>100%表示盈利能力可持续。">
+                            <span className="text-sm font-medium text-gray-700">推理覆盖率</span>
+                        </MetricTooltip>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                         {(data.inference_coverage.industry_average * 100).toFixed(0)}%
@@ -106,7 +109,9 @@ export default function RevenuePanel() {
                 <div className="bg-blue-50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Cloud className="w-4 h-4 text-cyan-600" />
-                        <span className="text-sm font-medium text-gray-700">资本密集度</span>
+                        <MetricTooltip content="云厂商AI相关资本支出占总营收的比例。高密集度意味着需要更多收入来回本，但也反映对AI基建的投入力度。">
+                            <span className="text-sm font-medium text-gray-700">资本密集度</span>
+                        </MetricTooltip>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                         {data.capital_intensity.overall}%

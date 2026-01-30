@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Target, TrendingUp, TrendingDown, Zap, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
+import MetricTooltip from '@/components/ui/MetricTooltip';
 
 interface HeroData {
     verdict: 'sustainable' | 'improving' | 'balanced' | 'concerning';
@@ -138,7 +139,9 @@ export default function HeroCard() {
             <div className="grid grid-cols-2 gap-6">
                 {/* 覆盖率 */}
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
-                    <p className="text-slate-400 text-sm mb-1">推理覆盖率</p>
+                    <MetricTooltip content="推理收入能否覆盖AI资产折旧成本。>100%表示收入可覆盖折旧，投资可持续。">
+                        <p className="text-slate-400 text-sm mb-1">推理覆盖率</p>
+                    </MetricTooltip>
                     <div className="flex items-center justify-center gap-2">
                         <span className="text-3xl font-bold text-white">
                             {(data.coverage_ratio * 100).toFixed(0)}%
@@ -148,12 +151,14 @@ export default function HeroCard() {
                             {data.coverage_change > 0 ? '+' : ''}{(data.coverage_change * 100).toFixed(0)}pp
                         </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">收入/折旧</p>
+                    <p className="text-xs text-slate-500 mt-1">= 推理收入 ÷ 资产折旧</p>
                 </div>
 
                 {/* 效率指数 */}
                 <div className="bg-slate-800/50 rounded-xl p-4 text-center">
-                    <p className="text-slate-400 text-sm mb-1">算力效率指数</p>
+                    <MetricTooltip content="每PFLOPS算力的租赁成本相对于2024Q1基准的效率提升。指数>100表示成本效率提升。">
+                        <p className="text-slate-400 text-sm mb-1">算力效率指数</p>
+                    </MetricTooltip>
                     <div className="flex items-center justify-center gap-2">
                         <span className="text-3xl font-bold text-white">
                             {data.efficiency_index.toFixed(0)}
@@ -163,7 +168,7 @@ export default function HeroCard() {
                             {data.efficiency_change > 0 ? '+' : ''}{data.efficiency_change.toFixed(0)}%
                         </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">成本效率 vs 基准</p>
+                    <p className="text-xs text-slate-500 mt-1">= 2024Q1基准100</p>
                 </div>
             </div>
 
