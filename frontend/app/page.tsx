@@ -1,13 +1,19 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import HeroCard from "@/components/dashboard/HeroCard";
 import RevenuePanel from "@/components/dashboard/RevenuePanel";
 import CostPanel from "@/components/dashboard/CostPanel";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
-import { RefreshCw } from "lucide-react";
 
 export default function DashboardPage() {
+  const [lastUpdated, setLastUpdated] = useState<string>('');
+
+  useEffect(() => {
+    setLastUpdated(new Date().toLocaleTimeString());
+  }, []);
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page title */}
@@ -16,9 +22,11 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-gray-900">AI 投资可持续性监测</h1>
           <p className="text-gray-500 mt-1">实时追踪 AI 基建投资回报与风险</p>
         </div>
-        <span className="text-xs text-gray-400">
-          更新于 {new Date().toLocaleTimeString()}
-        </span>
+        {lastUpdated && (
+          <span className="text-xs text-gray-400">
+            更新于 {lastUpdated}
+          </span>
+        )}
       </div>
 
       {/* Layer 1: 核心结论 Hero */}
