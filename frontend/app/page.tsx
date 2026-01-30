@@ -5,7 +5,7 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
 import { PriceSummary } from "@/components/dashboard/PriceSummary";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
-import { AIFinancialsCard } from "@/components/dashboard/AIFinancialsCard";
+import { AISustainabilityCard } from "@/components/dashboard/AISustainabilityCard";
 import { useSummary } from "@/lib/api-hooks";
 import { RefreshCw } from "lucide-react";
 
@@ -115,8 +115,8 @@ export default function DashboardPage() {
             {/* Price summary */}
             <PriceSummary />
 
-            {/* AI Financials */}
-            <AIFinancialsCard />
+            {/* AI Sustainability Scorecard */}
+            <AISustainabilityCard />
 
             {/* Recent signals */}
             <SignalFeed />

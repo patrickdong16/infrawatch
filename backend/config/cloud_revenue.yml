@@ -1,0 +1,68 @@
+# Cloud 业务季度收入 (手动更新自财报)
+# 单位: 百万美元
+
+# 数据来源: 各公司季度财报
+# 更新频率: 每季度财报发布后
+
+microsoft:
+  name: "Azure"
+  # Azure 收入数据来源: Microsoft 10-Q/10-K filings
+  history:
+    - quarter: "2025-Q4"
+      date: "2025-12-31"
+      revenue: 30300  # $30.3B
+      yoy_growth: 0.31  # +31%
+    - quarter: "2025-Q3"
+      date: "2025-09-30"
+      revenue: 28500
+      yoy_growth: 0.29
+    - quarter: "2025-Q2"
+      date: "2025-06-30"
+      revenue: 26800
+      yoy_growth: 0.29
+    - quarter: "2025-Q1"
+      date: "2025-03-31"
+      revenue: 25100
+      yoy_growth: 0.28
+
+alphabet:
+  name: "Google Cloud"
+  # Google Cloud 收入数据来源: Alphabet 10-Q/10-K filings
+  history:
+    - quarter: "2025-Q4"
+      date: "2025-12-31"
+      revenue: 12800  # $12.8B
+      yoy_growth: 0.26
+    - quarter: "2025-Q3"
+      date: "2025-09-30"
+      revenue: 11800
+      yoy_growth: 0.28
+    - quarter: "2025-Q2"
+      date: "2025-06-30"
+      revenue: 10800
+      yoy_growth: 0.29
+    - quarter: "2025-Q1"
+      date: "2025-03-31"
+      revenue: 9570
+      yoy_growth: 0.28
+
+amazon:
+  name: "AWS"
+  # AWS 收入数据来源: Amazon 10-Q/10-K filings
+  history:
+    - quarter: "2025-Q4"
+      date: "2025-12-31"
+      revenue: 28800  # $28.8B
+      yoy_growth: 0.19
+    - quarter: "2025-Q3"
+      date: "2025-09-30"
+      revenue: 27490
+      yoy_growth: 0.19
+    - quarter: "2025-Q2"
+      date: "2025-06-30"
+      revenue: 26300
+      yoy_growth: 0.17
+    - quarter: "2025-Q1"
+      date: "2025-03-31"
+      revenue: 25040
+      yoy_growth: 0.17

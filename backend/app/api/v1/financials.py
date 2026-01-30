@@ -205,3 +205,131 @@ async def get_growth_comparison() -> FinancialsResponse:
             "updated_at": datetime.utcnow().isoformat(),
         }
     )
+
+
+def load_cloud_revenue_config() -> Dict[str, Any]:
+    """加载 Cloud 收入 YAML 配置"""
+    import yaml
+    config_path = os.path.join(os.path.dirname(__file__), "../../../config/cloud_revenue.yml")
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"Error loading cloud revenue config: {e}")
+        return {}
+
+
+@router.get("/sustainability")
+async def get_sustainability_metrics() -> FinancialsResponse:
+    """
+    AI 可持续性评分卡数据
+    
+    返回:
+    - capital_intensity: 资本密集度 (CapEx / 总收入)
+    - cloud_revenue: Cloud 业务收入 (Azure, GCP, AWS)
+    - growth_comparison: Cloud收入增速 vs CapEx增速
+    """
+    # 1. 获取 EODHD 财务数据用于 CapEx 和总收入
+    cloud_companies = ["MSFT.US", "GOOGL.US", "AMZN.US"]
+    total_revenue = 0
+    total_capex = 0
+    prev_revenue = 0
+    prev_capex = 0
+    
+    for ticker in cloud_companies:
+        fundamentals = await fetch_fundamentals(ticker)
+        if fundamentals:
+            history = extract_quarterly_data(fundamentals)
+            if len(history) >= 2:
+                total_revenue += history[0].revenue or 0
+                total_capex += abs(history[0].capex or 0)
+                prev_revenue += history[1].revenue or 0
+                prev_capex += abs(history[1].capex or 0)
+    
+    # 2. 加载 Cloud 收入配置
+    cloud_config = load_cloud_revenue_config()
+    
+    cloud_revenue_data = []
+    total_cloud_revenue = 0
+    prev_cloud_revenue = 0
+    
+    for company_key, company_data in cloud_config.items():
+        history = company_data.get("history", [])
+        if len(history) >= 2:
+            latest = history[0]
+            previous = history[1]
+            revenue = latest.get("revenue", 0)
+            prev_rev = previous.get("revenue", 0)
+            
+            total_cloud_revenue += revenue
+            prev_cloud_revenue += prev_rev
+            
+            cloud_revenue_data.append({
+                "company": company_key.title(),
+                "segment": company_data.get("name", ""),
+                "revenue_m": revenue,
+                "revenue_b": round(revenue / 1000, 1),
+                "yoy_growth": latest.get("yoy_growth"),
+                "qoq_growth": round((revenue / prev_rev - 1) * 100, 1) if prev_rev > 0 else None,
+                "quarter": latest.get("quarter", ""),
+            })
+    
+    # 3. 计算指标
+    capital_intensity = round(total_capex / total_revenue * 100, 1) if total_revenue > 0 else 0
+    capital_intensity_qoq = round(
+        (total_capex / total_revenue - prev_capex / prev_revenue) * 100, 1
+    ) if prev_revenue > 0 and prev_capex > 0 else 0
+    
+    cloud_growth = round((total_cloud_revenue / prev_cloud_revenue - 1) * 100, 1) if prev_cloud_revenue > 0 else 0
+    capex_growth = calculate_qoq(total_capex, prev_capex) or 0
+    growth_spread = round(cloud_growth - capex_growth, 1)
+    
+    # 4. 生成增速对比时间序列 (从 Cloud 配置中提取)
+    # 按季度聚合
+    quarter_series = {}
+    for company_key, company_data in cloud_config.items():
+        for item in company_data.get("history", []):
+            q = item.get("quarter", "")
+            if q not in quarter_series:
+                quarter_series[q] = {"cloud_revenue": 0}
+            quarter_series[q]["cloud_revenue"] += item.get("revenue", 0)
+    
+    # 计算 Cloud 增速序列
+    sorted_quarters = sorted(quarter_series.keys())
+    growth_series = []
+    for i, q in enumerate(sorted_quarters):
+        if i == 0:
+            continue
+        prev_q = sorted_quarters[i - 1]
+        current = quarter_series[q]["cloud_revenue"]
+        previous = quarter_series[prev_q]["cloud_revenue"]
+        growth_series.append({
+            "quarter": q,
+            "cloud_growth": round((current / previous - 1) * 100, 1) if previous > 0 else 0,
+            "capex_growth": None,  # 需要从 EODHD 获取历史 CapEx
+        })
+    
+    return FinancialsResponse(
+        success=True,
+        data={
+            "capital_intensity": {
+                "current": capital_intensity,
+                "qoq_change": capital_intensity_qoq,
+                "trend": "up" if capital_intensity_qoq > 0 else "down",
+                "description": "资本密集度 = CapEx / 总收入",
+            },
+            "cloud_revenue": {
+                "total_b": round(total_cloud_revenue / 1000, 1),
+                "qoq_growth": cloud_growth,
+                "companies": sorted(cloud_revenue_data, key=lambda x: x["revenue_m"], reverse=True),
+            },
+            "growth_comparison": {
+                "cloud_growth": cloud_growth,
+                "capex_growth": capex_growth,
+                "spread": growth_spread,
+                "spread_trend": "positive" if growth_spread > 0 else "negative",
+                "series": growth_series,
+            },
+            "updated_at": datetime.utcnow().isoformat(),
+        }
+    )
