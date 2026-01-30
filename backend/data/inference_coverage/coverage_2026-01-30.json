@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-01-30T20:30:45.828466",
+  "rss_articles": 50,
+  "relevant_articles": [
+    {
+      "title": "Amazon is reportedly in talks to invest $50B in OpenAI",
+      "url": "https://techcrunch.com/2026/01/29/amazon-is-reportedly-in-talks-to-invest-50-billion-in-openai/",
+      "source": "https://techcrunch.com/feed/",
+      "matched_company": "openai",
+      "matched_keyword": "OpenAI"
+    },
+    {
+      "title": "OpenAI’s Sora app is struggling after its stellar launch",
+      "url": "https://techcrunch.com/2026/01/29/openais-sora-app-is-struggling-after-its-stellar-launch/",
+      "source": "https://techcrunch.com/feed/",
+      "matched_company": "openai",
+      "matched_keyword": "OpenAI"
+    },
+    {
+      "title": "Music publishers sue Anthropic for $3B over ‘flagrant piracy’ of 20,000 works",
+      "url": "https://techcrunch.com/2026/01/29/music-publishers-sue-anthropic-for-3b-over-flagrant-piracy-of-20000-works/",
+      "source": "https://techcrunch.com/feed/",
+      "matched_company": "anthropic",
+      "matched_keyword": "Anthropic"
+    },
+    {
+      "title": "Does Anthropic believe its AI is conscious, or is that just what it wants Claude to think?",
+      "url": "https://arstechnica.com/information-technology/2026/01/does-anthropic-believe-its-ai-is-conscious-or-is-that-just-what-it-wants-claude-to-think/",
+      "source": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+      "matched_company": "anthropic",
+      "matched_keyword": "Anthropic"
+    },
+    {
+      "title": "OpenAI spills technical details about how its AI coding agent works",
+      "url": "https://arstechnica.com/ai/2026/01/openai-spills-technical-details-about-how-its-ai-coding-agent-works/",
+      "source": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+      "matched_company": "openai",
+      "matched_keyword": "OpenAI"
+    },
+    {
+      "title": "OpenAI to test ads in ChatGPT as it burns through billions",
+      "url": "https://arstechnica.com/information-technology/2026/01/openai-to-test-ads-in-chatgpt-as-it-burns-through-billions/",
+      "source": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+      "matched_company": "openai",
+      "matched_keyword": "OpenAI"
+    }
+  ],
+  "sec_filings": {
+    "microsoft": [
+      {
+        "form_type": "8-K",
+        "filing_date": "2026-01-28",
+        "accession": "0001193125-26-027198",
+        "company": "MICROSOFT CORP"
+      },
+      {
+        "form_type": "8-K",
+        "filing_date": "2025-12-08",
+        "accession": "0001193125-25-311196",
+        "company": "MICROSOFT CORP"
+      }
+    ],
+    "google": [],
+    "amazon": [
+      {
+        "form_type": "8-K",
+        "filing_date": "2025-11-20",
+        "accession": "0001104659-25-114647",
+        "company": "AMAZON COM INC"
+      },
+      {
+        "form_type": "8-K",
+        "filing_date": "2025-10-30",
+        "accession": "0001018724-25-000121",
+        "company": "AMAZON COM INC"
+      }
+    ]
+  }
+}

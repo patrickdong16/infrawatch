@@ -1,0 +1,450 @@
+{
+  "timestamp": "2026-01-30T20:30:37.683481",
+  "providers": {
+    "lambda_labs": [
+      {
+        "sku_id": "gpu_1x_b200",
+        "price": 4.99,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "B200",
+          "vram_gb": 192
+        },
+        "release_date": "2025-03-01",
+        "available_since": "2025-06-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_8x_b200",
+        "price": 39.92,
+        "specs": {
+          "gpus": 8,
+          "gpu_type": "B200",
+          "vram_gb": 192
+        },
+        "release_date": "2025-03-01",
+        "available_since": "2025-06-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_b100",
+        "price": 3.99,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "B100",
+          "vram_gb": 192
+        },
+        "release_date": "2024-09-01",
+        "available_since": "2024-12-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_8x_b100",
+        "price": 31.92,
+        "specs": {
+          "gpus": 8,
+          "gpu_type": "B100",
+          "vram_gb": 192
+        },
+        "release_date": "2024-09-01",
+        "available_since": "2024-12-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_h200",
+        "price": 3.49,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "H200 SXM",
+          "vram_gb": 141
+        },
+        "release_date": "2024-03-01",
+        "available_since": "2024-06-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_8x_h200",
+        "price": 27.92,
+        "specs": {
+          "gpus": 8,
+          "gpu_type": "H200 SXM",
+          "vram_gb": 141
+        },
+        "release_date": "2024-03-01",
+        "available_since": "2024-06-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_h100_pcie",
+        "price": 2.49,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "H100 PCIe",
+          "vram_gb": 80
+        },
+        "release_date": "2022-09-01",
+        "available_since": "2023-01-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_8x_h100_sxm5",
+        "price": 23.92,
+        "specs": {
+          "gpus": 8,
+          "gpu_type": "H100 SXM5",
+          "vram_gb": 80
+        },
+        "release_date": "2022-09-01",
+        "available_since": "2023-01-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_a100_sxm4",
+        "price": 1.29,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "A100 SXM4 40GB",
+          "vram_gb": 40
+        },
+        "release_date": "2020-05-01",
+        "available_since": "2020-09-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_8x_a100_sxm4",
+        "price": 10.32,
+        "specs": {
+          "gpus": 8,
+          "gpu_type": "A100 SXM4 40GB",
+          "vram_gb": 40
+        },
+        "release_date": "2020-05-01",
+        "available_since": "2020-09-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_a100_sxm4_80gb",
+        "price": 1.89,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "A100 SXM4 80GB",
+          "vram_gb": 80
+        },
+        "release_date": "2020-11-01",
+        "available_since": "2021-03-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_a10",
+        "price": 0.6,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "A10",
+          "vram_gb": 24
+        },
+        "release_date": "2021-04-01",
+        "available_since": "2021-06-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_rtx6000ada",
+        "price": 0.99,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "RTX 6000 Ada",
+          "vram_gb": 48
+        },
+        "release_date": "2022-12-01",
+        "available_since": "2023-03-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      },
+      {
+        "sku_id": "gpu_1x_l40s",
+        "price": 1.19,
+        "specs": {
+          "gpus": 1,
+          "gpu_type": "L40S",
+          "vram_gb": 48
+        },
+        "release_date": "2023-08-01",
+        "available_since": "2023-11-01",
+        "currency": "USD",
+        "price_type": "on_demand",
+        "unit": "per_hour",
+        "source": "fallback"
+      }
+    ],
+    "aws": [
+      {
+        "sku_id": "p5.48xlarge",
+        "hourly_rate": 98.32,
+        "price_type": "on_demand",
+        "display_name": "P5.48xlarge (8x H100)",
+        "gpu_type": "H100",
+        "gpu_count": 8,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-east-1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:34.362829"
+      },
+      {
+        "sku_id": "p4d.24xlarge",
+        "hourly_rate": 32.77,
+        "price_type": "on_demand",
+        "display_name": "P4d.24xlarge (8x A100)",
+        "gpu_type": "A100",
+        "gpu_count": 8,
+        "gpu_memory": 40,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-east-1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:34.362838"
+      },
+      {
+        "sku_id": "inf2.48xlarge",
+        "hourly_rate": 12.98,
+        "price_type": "on_demand",
+        "display_name": "Inf2.48xlarge (12x Inferentia2)",
+        "gpu_type": "Inferentia2",
+        "gpu_count": 12,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-east-1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:34.362842"
+      },
+      {
+        "sku_id": "trn1.32xlarge",
+        "hourly_rate": 21.5,
+        "price_type": "on_demand",
+        "display_name": "Trn1.32xlarge (16x Trainium)",
+        "gpu_type": "Trainium",
+        "gpu_count": 16,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-east-1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:34.362844"
+      },
+      {
+        "sku_id": "g5.48xlarge",
+        "hourly_rate": 16.29,
+        "price_type": "on_demand",
+        "display_name": "G5.48xlarge (8x A10G)",
+        "gpu_type": "A10G",
+        "gpu_count": 8,
+        "gpu_memory": 24,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-east-1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:34.362847"
+      }
+    ],
+    "azure": [
+      {
+        "sku_id": "nd96asr-v4",
+        "hourly_rate": 27.2,
+        "price_type": "on_demand",
+        "display_name": "ND96asr_v4 (8x A100 40GB)",
+        "gpu_type": "A100",
+        "gpu_count": 8,
+        "gpu_memory": 40,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "eastus",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:35.385959"
+      },
+      {
+        "sku_id": "nd96amsr-a100-v4",
+        "hourly_rate": 32.77,
+        "price_type": "on_demand",
+        "display_name": "ND96amsr_A100_v4 (8x A100 80GB)",
+        "gpu_type": "A100",
+        "gpu_count": 8,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "eastus",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:35.385971"
+      },
+      {
+        "sku_id": "nc24ads-a100-v4",
+        "hourly_rate": 3.67,
+        "price_type": "on_demand",
+        "display_name": "NC24ads_A100_v4 (1x A100 80GB)",
+        "gpu_type": "A100",
+        "gpu_count": 1,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "eastus",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:35.385975"
+      },
+      {
+        "sku_id": "nv72ads-a10-v5",
+        "hourly_rate": 5.54,
+        "price_type": "on_demand",
+        "display_name": "NV72ads_A10_v5 (2x A10)",
+        "gpu_type": "A10",
+        "gpu_count": 2,
+        "gpu_memory": 24,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "eastus",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:35.385978"
+      },
+      {
+        "sku_id": "nc40ads-h100-v5",
+        "hourly_rate": 8.97,
+        "price_type": "on_demand",
+        "display_name": "NC40ads_H100_v5 (1x H100 80GB)",
+        "gpu_type": "H100",
+        "gpu_count": 1,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "eastus",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:35.385982"
+      }
+    ],
+    "gcp": [
+      {
+        "sku_id": "a3-highgpu-8g",
+        "hourly_rate": 101.22,
+        "price_type": "on_demand",
+        "display_name": "A3 Highgpu 8g (8x H100 80GB)",
+        "gpu_type": "H100",
+        "gpu_count": 8,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683264"
+      },
+      {
+        "sku_id": "a2-highgpu-8g",
+        "hourly_rate": 29.39,
+        "price_type": "on_demand",
+        "display_name": "A2 Highgpu 8g (8x A100 80GB)",
+        "gpu_type": "A100",
+        "gpu_count": 8,
+        "gpu_memory": 80,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683281"
+      },
+      {
+        "sku_id": "a2-highgpu-4g",
+        "hourly_rate": 14.69,
+        "price_type": "on_demand",
+        "display_name": "A2 Highgpu 4g (4x A100 40GB)",
+        "gpu_type": "A100",
+        "gpu_count": 4,
+        "gpu_memory": 40,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683286"
+      },
+      {
+        "sku_id": "a2-highgpu-1g",
+        "hourly_rate": 3.67,
+        "price_type": "on_demand",
+        "display_name": "A2 Highgpu 1g (1x A100 40GB)",
+        "gpu_type": "A100",
+        "gpu_count": 1,
+        "gpu_memory": 40,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683291"
+      },
+      {
+        "sku_id": "g2-standard-96",
+        "hourly_rate": 8.56,
+        "price_type": "on_demand",
+        "display_name": "G2 Standard 96 (8x L4)",
+        "gpu_type": "L4",
+        "gpu_count": 8,
+        "gpu_memory": 24,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683294"
+      },
+      {
+        "sku_id": "g2-standard-24",
+        "hourly_rate": 2.14,
+        "price_type": "on_demand",
+        "display_name": "G2 Standard 24 (2x L4)",
+        "gpu_type": "L4",
+        "gpu_count": 2,
+        "gpu_memory": 24,
+        "currency": "USD",
+        "unit": "per_hour",
+        "region": "us-central1",
+        "source": "fallback",
+        "recorded_at": "2026-01-30T12:30:37.683298"
+      }
+    ]
+  },
+  "aggregated": {
+    "h200": 3.49,
+    "h100_sxm": 0,
+    "a100_80gb": 1.89
+  }
+}

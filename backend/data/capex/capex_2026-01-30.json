@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-30T20:29:15.464714",
+  "timestamp": "2026-01-30T20:30:55.268708",
   "companies": {
     "Microsoft": [
       {
@@ -11,7 +11,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866114"
+        "updated_at": "2026-01-30T20:30:47.704144"
       },
       {
         "company": "Microsoft",
@@ -22,7 +22,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866132"
+        "updated_at": "2026-01-30T20:30:47.704159"
       },
       {
         "company": "Microsoft",
@@ -33,7 +33,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866137"
+        "updated_at": "2026-01-30T20:30:47.704164"
       },
       {
         "company": "Microsoft",
@@ -44,7 +44,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866140"
+        "updated_at": "2026-01-30T20:30:47.704167"
       },
       {
         "company": "Microsoft",
@@ -55,7 +55,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866143"
+        "updated_at": "2026-01-30T20:30:47.704170"
       },
       {
         "company": "Microsoft",
@@ -66,7 +66,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019",
-        "updated_at": "2026-01-30T20:29:07.866146"
+        "updated_at": "2026-01-30T20:30:47.704173"
       }
     ],
     "Alphabet": [
@@ -79,7 +79,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455744"
+        "updated_at": "2026-01-30T20:30:49.943527"
       },
       {
         "company": "Alphabet",
@@ -90,7 +90,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455758"
+        "updated_at": "2026-01-30T20:30:49.943545"
       },
       {
         "company": "Alphabet",
@@ -101,7 +101,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455762"
+        "updated_at": "2026-01-30T20:30:49.943549"
       },
       {
         "company": "Alphabet",
@@ -112,7 +112,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455765"
+        "updated_at": "2026-01-30T20:30:49.943552"
       },
       {
         "company": "Alphabet",
@@ -123,7 +123,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455768"
+        "updated_at": "2026-01-30T20:30:49.943554"
       },
       {
         "company": "Alphabet",
@@ -134,7 +134,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455771"
+        "updated_at": "2026-01-30T20:30:49.943558"
       },
       {
         "company": "Alphabet",
@@ -145,7 +145,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455775"
+        "updated_at": "2026-01-30T20:30:49.943562"
       },
       {
         "company": "Alphabet",
@@ -156,7 +156,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455778"
+        "updated_at": "2026-01-30T20:30:49.943564"
       },
       {
         "company": "Alphabet",
@@ -167,7 +167,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455780"
+        "updated_at": "2026-01-30T20:30:49.943567"
       },
       {
         "company": "Alphabet",
@@ -178,7 +178,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455783"
+        "updated_at": "2026-01-30T20:30:49.943570"
       },
       {
         "company": "Alphabet",
@@ -189,7 +189,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455786"
+        "updated_at": "2026-01-30T20:30:49.943572"
       },
       {
         "company": "Alphabet",
@@ -200,7 +200,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455788"
+        "updated_at": "2026-01-30T20:30:49.943575"
       },
       {
         "company": "Alphabet",
@@ -211,7 +211,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455791"
+        "updated_at": "2026-01-30T20:30:49.943577"
       },
       {
         "company": "Alphabet",
@@ -222,7 +222,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455794"
+        "updated_at": "2026-01-30T20:30:49.943580"
       },
       {
         "company": "Alphabet",
@@ -233,7 +233,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455797"
+        "updated_at": "2026-01-30T20:30:49.943584"
       },
       {
         "company": "Alphabet",
@@ -244,7 +244,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455799"
+        "updated_at": "2026-01-30T20:30:49.943586"
       },
       {
         "company": "Alphabet",
@@ -255,7 +255,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455802"
+        "updated_at": "2026-01-30T20:30:49.943589"
       },
       {
         "company": "Alphabet",
@@ -266,7 +266,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455805"
+        "updated_at": "2026-01-30T20:30:49.943592"
       },
       {
         "company": "Alphabet",
@@ -277,7 +277,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455808"
+        "updated_at": "2026-01-30T20:30:49.943595"
       },
       {
         "company": "Alphabet",
@@ -288,7 +288,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044",
-        "updated_at": "2026-01-30T20:29:10.455811"
+        "updated_at": "2026-01-30T20:30:49.943598"
       }
     ],
     "Amazon": [],
@@ -302,7 +302,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961018"
+        "updated_at": "2026-01-30T20:30:54.765020"
       },
       {
         "company": "Meta",
@@ -313,7 +313,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961031"
+        "updated_at": "2026-01-30T20:30:54.765041"
       },
       {
         "company": "Meta",
@@ -324,7 +324,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961035"
+        "updated_at": "2026-01-30T20:30:54.765045"
       },
       {
         "company": "Meta",
@@ -335,7 +335,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961038"
+        "updated_at": "2026-01-30T20:30:54.765048"
       },
       {
         "company": "Meta",
@@ -346,7 +346,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961042"
+        "updated_at": "2026-01-30T20:30:54.765051"
       },
       {
         "company": "Meta",
@@ -357,7 +357,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961045"
+        "updated_at": "2026-01-30T20:30:54.765055"
       },
       {
         "company": "Meta",
@@ -368,7 +368,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961048"
+        "updated_at": "2026-01-30T20:30:54.765057"
       },
       {
         "company": "Meta",
@@ -379,7 +379,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961051"
+        "updated_at": "2026-01-30T20:30:54.765060"
       },
       {
         "company": "Meta",
@@ -390,7 +390,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961054"
+        "updated_at": "2026-01-30T20:30:54.765063"
       },
       {
         "company": "Meta",
@@ -401,7 +401,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961056"
+        "updated_at": "2026-01-30T20:30:54.765066"
       },
       {
         "company": "Meta",
@@ -412,7 +412,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961059"
+        "updated_at": "2026-01-30T20:30:54.765069"
       },
       {
         "company": "Meta",
@@ -423,7 +423,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961062"
+        "updated_at": "2026-01-30T20:30:54.765072"
       },
       {
         "company": "Meta",
@@ -434,7 +434,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961065"
+        "updated_at": "2026-01-30T20:30:54.765074"
       },
       {
         "company": "Meta",
@@ -445,7 +445,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961068"
+        "updated_at": "2026-01-30T20:30:54.765077"
       },
       {
         "company": "Meta",
@@ -456,7 +456,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961071"
+        "updated_at": "2026-01-30T20:30:54.765080"
       },
       {
         "company": "Meta",
@@ -467,7 +467,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961074"
+        "updated_at": "2026-01-30T20:30:54.765083"
       },
       {
         "company": "Meta",
@@ -478,7 +478,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961076"
+        "updated_at": "2026-01-30T20:30:54.765085"
       },
       {
         "company": "Meta",
@@ -489,7 +489,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961079"
+        "updated_at": "2026-01-30T20:30:54.765088"
       },
       {
         "company": "Meta",
@@ -500,7 +500,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961082"
+        "updated_at": "2026-01-30T20:30:54.765091"
       },
       {
         "company": "Meta",
@@ -511,7 +511,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961085"
+        "updated_at": "2026-01-30T20:30:54.765094"
       },
       {
         "company": "Meta",
@@ -522,7 +522,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961088"
+        "updated_at": "2026-01-30T20:30:54.765096"
       },
       {
         "company": "Meta",
@@ -533,7 +533,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961091"
+        "updated_at": "2026-01-30T20:30:54.765099"
       },
       {
         "company": "Meta",
@@ -544,7 +544,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961093"
+        "updated_at": "2026-01-30T20:30:54.765102"
       },
       {
         "company": "Meta",
@@ -555,7 +555,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961096"
+        "updated_at": "2026-01-30T20:30:54.765105"
       },
       {
         "company": "Meta",
@@ -566,7 +566,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961099"
+        "updated_at": "2026-01-30T20:30:54.765107"
       },
       {
         "company": "Meta",
@@ -577,7 +577,7 @@
         "ai_capex_estimate_b": null,
         "source": "SEC XBRL",
         "source_url": "https://data.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801",
-        "updated_at": "2026-01-30T20:29:14.961102"
+        "updated_at": "2026-01-30T20:30:54.765111"
       }
     ]
   },
