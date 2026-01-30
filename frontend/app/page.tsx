@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import HeroCard from "@/components/dashboard/HeroCard";
 import RevenuePanel from "@/components/dashboard/RevenuePanel";
 import CostPanel from "@/components/dashboard/CostPanel";
+import ROIComparisonCard from "@/components/dashboard/ROIComparisonCard";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
 import NewsFeed from "@/components/dashboard/NewsFeed";
@@ -34,24 +35,26 @@ export default function DashboardPage() {
       {/* Layer 1: 核心结论 Hero */}
       <HeroCard />
 
-      {/* Layer 2: 收入端 vs 成本端分析 */}
+      {/* Layer 2: 收入 vs 成本 对比分析 (新增！) */}
+      <ROIComparisonCard />
+
+      {/* Layer 3: 收入端 vs 成本端详细分析 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RevenuePanel />
         <CostPanel />
       </div>
 
-      {/* Layer 3: 实时数据 - GPU价格 + 新闻动态 */}
+      {/* Layer 4: 实时数据 - GPU价格 + 新闻动态 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <GPUPricesCard />
         <NewsFeed />
       </div>
 
-      {/* Layer 4: 供应链风险 */}
+      {/* Layer 5: 供应链风险 */}
       <SupplyChainAlert />
 
-      {/* Layer 5: 实时动态 */}
+      {/* Layer 6: 实时动态 */}
       <SignalFeed />
     </div>
   );
 }
-
