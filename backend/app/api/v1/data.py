@@ -140,9 +140,6 @@ async def get_summary():
     # OpenAI GPT-4o 价格
     gpt4o_input = next((p for p in prices if p.get("sku_id") == "gpt-4o" and p.get("price_type") == "input"), None)
     
-    # H100 价格
-    h100 = next((p for p in prices if "h100" in p.get("sku_id", "").lower()), None)
-    
     # 推理价格指数
     inference_index = next((m for m in metrics if m.get("metric_id") == "inference_price_index"), None)
     
@@ -173,16 +170,6 @@ async def get_summary():
                     "weekOverWeek": -5.2,
                     "monthOverMonth": -12.8,
                     "yearOverYear": -45.0,
-                },
-                {
-                    "id": "gpu_hourly",
-                    "name": "H100 小时价",
-                    "value": h100.get("price") if h100 else 2.49,
-                    "unit": "$/hr",
-                    "status": "neutral",
-                    "weekOverWeek": -2.1,
-                    "monthOverMonth": -8.5,
-                    "yearOverYear": -35.0,
                 },
             ],
             "providers": {
