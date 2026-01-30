@@ -6,6 +6,8 @@ import RevenuePanel from "@/components/dashboard/RevenuePanel";
 import CostPanel from "@/components/dashboard/CostPanel";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
+import NewsFeed from "@/components/dashboard/NewsFeed";
+import GPUPricesCard from "@/components/dashboard/GPUPricesCard";
 
 export default function DashboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string>('');
@@ -38,11 +40,18 @@ export default function DashboardPage() {
         <CostPanel />
       </div>
 
-      {/* Layer 3: 供应链风险 */}
+      {/* Layer 3: 实时数据 - GPU价格 + 新闻动态 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <GPUPricesCard />
+        <NewsFeed />
+      </div>
+
+      {/* Layer 4: 供应链风险 */}
       <SupplyChainAlert />
 
-      {/* Layer 4: 实时动态 */}
+      {/* Layer 5: 实时动态 */}
       <SignalFeed />
     </div>
   );
 }
+
