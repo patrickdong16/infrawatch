@@ -24,20 +24,30 @@
 
 ---
 
-### 2. 推理覆盖率 (`inference_coverage.yml`)
+### 2. 推理覆盖率 (`inference_coverage.yml`) - **月度更新**
 
 | 公司 | 数据来源 | 估算方法 |
 |------|----------|----------|
 | **OpenAI** | 公开报道 + 融资估值 | ARR估算 ÷ GPU资产折旧 |
-| **Anthropic** | 融资报道 | 营收估算 ÷ |
+| **Anthropic** | 融资报道 | 营收估算 ÷ 资产折旧 |
 | **Microsoft** | 季度财报 (Azure AI段) | AI服务收入 ÷ CapEx分摊 |
 | **Google** | 季度财报 (Cloud AI) | Vertex收入 ÷ TPU资产 |
 | **AWS** | 季度财报 (AWS AI) | Bedrock收入估算 |
 
-**关键报道来源**:
-- The Information, Bloomberg, WSJ 科技版
-- 公司季度财报电话会议
-- Semianalysis 行业分析
+**月度信息来源**:
+| 来源 | 类型 | 监测方式 |
+|------|------|----------|
+| The Information | 付费订阅 | RSS/邮件 |
+| Bloomberg Terminal | 实时新闻 | 关键词监测 |
+| WSJ Tech Section | 公开报道 | RSS |
+| Semianalysis | 行业分析 | 订阅 |
+| Company Blogs | 官方公告 | RSS |
+| SEC Filings (8-K) | 重大事件 | EDGAR API |
+| Twitter/X AI Accounts | 实时动态 | 列表监测 |
+
+**月度估算逻辑**:
+- 基于季度财报基准，结合月度新闻线性插值
+- 重大事件(融资/产品发布)触发即时调整
 
 ---
 
