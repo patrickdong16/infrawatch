@@ -90,16 +90,38 @@ infrawatch/
 ├── backend/               # FastAPI 后端
 │   ├── app/
 │   │   ├── api/v1/       # REST API
+│   │   │   ├── data.py            # 通用数据端点
+│   │   │   ├── prices.py          # 价格 CRUD
+│   │   │   ├── price_indices.py   # [新增] 厂商价格指数
+│   │   │   ├── financials.py      # [新增] EODHD财务数据
+│   │   │   ├── signals.py         # 信号中心
+│   │   │   ├── stage.py           # 阶段判定
+│   │   │   └── supply_chain.py    # 供应链
 │   │   ├── domain/       # 业务逻辑 (stage_engine, signal_detector)
+│   │   ├── repositories/ # 数据访问
+│   │   │   └── price_history.py   # 价格历史 + 趋势计算
 │   │   ├── models/       # SQLAlchemy 模型
 │   │   ├── schemas/      # Pydantic 模型
 │   │   └── services/     # 服务层
+│   ├── config/           # YAML 配置
+│   │   └── supply_chain.yml       # 供应链历史数据
+│   ├── spiders/          # 爬虫模块
 │   └── workers/
-│       ├── spiders/      # 爬虫
 │       └── tasks/        # Celery 任务
 └── frontend/              # Next.js 前端
     ├── app/              # 页面
-    └── components/       # 组件
+    │   ├── page.tsx               # Dashboard
+    │   └── prices/page.tsx        # 价格监测 (含厂商卡片)
+    ├── components/       # 组件
+    │   └── dashboard/
+    │       ├── AIFinancialsCard.tsx   # [新增] 财务指标卡片
+    │       ├── MetricCard.tsx
+    │       ├── PriceSummary.tsx
+    │       ├── SignalFeed.tsx
+    │       ├── StageGauge.tsx
+    │       └── SupplyChainAlert.tsx
+    └── lib/              # 工具库
+        └── api-hooks.ts           # SWR hooks
 ```
 
 ### 3.3 API 响应格式 (强制)
@@ -155,6 +177,67 @@ class XXXSpider(BaseSpider):
 | adoption_inflection | MEDIUM | 季度环比 > 20% |
 | coverage_threshold | HIGH | M01跨越0.3/0.7/1.0 |
 
+### 4.4 代码模式 (v1.1 新增)
+
+#### 厂商价格指数计算
+
+```python
+# backend/app/api/v1/price_indices.py
+# 加权平均价格计算
+MODEL_WEIGHTS = {"flagship": 1.0, "mid": 0.5, "economy": 0.3}
+
+def get_model_weight(sku_id: str) -> float:
+    if any(k in sku_id for k in ["gpt-4o", "claude-3.5", "gemini-1.5-pro"]):
+        return 1.0  # 旗舰
+    elif any(k in sku_id for k in ["mini", "haiku", "flash"]):
+        return 0.3  # 经济
+    return 0.5  # 中端
+```
+
+#### EODHD 财务数据集成
+
+```python
+# backend/app/api/v1/financials.py
+# 通过 EODHD API 获取真实财报数据
+EODHD_API_KEY = os.getenv("EODHD_API_KEY")
+
+AI_COMPANIES = [
+    {"ticker": "MSFT.US", "name": "Microsoft", "focus": "Azure AI"},
+    {"ticker": "GOOGL.US", "name": "Alphabet", "focus": "Google Cloud AI"},
+    # ...
+]
+
+async def fetch_fundamentals(ticker: str) -> Optional[Dict]:
+    url = f"https://eodhd.com/api/fundamentals/{ticker}"
+    # ...
+```
+
+#### 前端数据 Hooks 模式
+
+```typescript
+// frontend/lib/api-hooks.ts
+// 使用 SWR 进行数据获取和缓存
+export function useProviderIndices() {
+  return useSWR(
+    `${API_BASE}/api/v1/prices/provider-indices`,
+    fetcher,
+    { refreshInterval: 60000 }
+  );
+}
+```
+
+#### 趋势 Fallback 模式
+
+```python
+# backend/app/repositories/price_history.py
+# 当数据库无历史数据时，使用模拟趋势
+if trends["weekOverWeek"] is None:
+    seed = hash(f"{provider}-{sku_id}") % 10000
+    random.seed(seed)  # 确保同一产品趋势稳定
+    trends["weekOverWeek"] = round(random.uniform(-5.0, 0.5), 1)
+    item["trend_source"] = "simulated"
+```
+
 ---
 
 ## 五、环境变量
@@ -170,6 +253,9 @@ REDIS_URL=redis://localhost:6379/0
 
 # 前端
 NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# EODHD 财务数据 API (v1.1 新增)
+EODHD_API_KEY=your_eodhd_api_key
 
 # 可选: 爬虫代理
 PROXY_URL=

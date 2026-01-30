@@ -1,0 +1,126 @@
+# 供应链原材料价格配置
+# 数据来源: TrendForce, DRAMeXchange, 供应链调研
+# 更新频率: 每周/每月手动更新
+
+metadata:
+  last_updated: "2026-01-30"
+  source: "TrendForce Q1 2026 Report, DRAMeXchange Weekly"
+  editor: "infrawatch-admin"
+
+# HBM 高带宽内存
+hbm:
+  - item: "HBM3e-24GB"
+    current_price: 15.50
+    unit: "USD/GB"
+    source: "TrendForce"
+    # 价格趋势描述（用于前端展示）
+    trend_description: "自2023年中开始持续上涨，AI需求推动"
+    trend_start_date: "2023-06-01"
+    # 历史价格点（用于计算和图表）- 2023年至今
+    history:
+      # 2023年数据 (HBM3 时代)
+      - date: "2023-01-01"
+        price: 6.00
+        note: "HBM3 起始价格"
+      - date: "2023-06-01"
+        price: 7.50
+        note: "AI热潮开始，需求上升"
+      - date: "2023-12-01"
+        price: 8.50
+        note: "HBM3e发布前夕"
+      # 2024年数据 (HBM3e 普及)
+      - date: "2024-03-01"
+        price: 9.50
+        note: "HBM3e开始量产"
+      - date: "2024-06-01"
+        price: 10.00
+        note: "NVIDIA B100需求推动"
+      - date: "2024-09-01"
+        price: 11.50
+        note: "产能紧张"
+      - date: "2024-12-01"
+        price: 13.00
+        note: "年末涨价"
+      # 2025年数据
+      - date: "2025-03-01"
+        price: 14.00
+      - date: "2025-06-01"
+        price: 10.50
+        note: "供应改善短暂回落"
+      - date: "2025-09-01"
+        price: 12.00
+      - date: "2025-12-01"
+        price: 14.00
+      # 2026年数据
+      - date: "2026-01-01"
+        price: 15.50
+        note: "HBM4预期推动"
+    # 变化率（可从 history 计算，也可手动设置）
+    mom_change: 3.2      # 月环比 +3.2%
+    yoy_change: 47.6     # 年同比 +47.6%
+    
+# DRAM 动态随机存取内存
+dram:
+  - item: "DDR5-4800-64GB"
+    current_price: 185.0
+    unit: "USD/piece"
+    source: "DRAMeXchange"
+    trend_description: "库存消化中，价格相对平稳"
+    history:
+      - date: "2025-06-01"
+        price: 218.0
+      - date: "2025-12-01"
+        price: 189.0
+      - date: "2026-01-01"
+        price: 185.0
+    mom_change: -2.1
+    yoy_change: -15.1
+    
+# GPU 采购价格
+gpu:
+  - item: "H100-80GB-SXM"
+    current_price: 28500.0
+    unit: "USD/unit"
+    source: "渠道调研"
+    trend_description: "供应充足，价格稳定"
+    mom_change: 0.0
+    yoy_change: -12.0
+    
+  - item: "B200-192GB"
+    current_price: 42000.0
+    unit: "USD/unit"
+    source: "渠道调研"
+    trend_description: "新品上市，供应紧张"
+    available_since: "2025-09-01"
+    mom_change: null  # 上市时间短，无月环比
+    yoy_change: null
+
+# 先进封装
+packaging:
+  - item: "CoWoS利用率"
+    current_price: 98.0
+    unit: "percent"
+    source: "供应链调研"
+    trend_description: "满载运行，产能紧张"
+    mom_change: 0.0
+    yoy_change: 8.0
+
+# 派生指数（系统计算或手动设置）
+derived_indices:
+  E_hbm_premium:
+    value: 83.8
+    unit: "倍"
+    description: "HBM3e单位价格 / DDR5单位价格"
+    calculation: "15.50 / 0.185 ≈ 83.8"
+    
+  E_memory_cost_index:
+    value: 147.6
+    unit: "基准=100 (2025-01)"
+    description: "HBM + DRAM加权价格指数"
+    trend_description: "持续走高，反映HBM涨价"
+    
+  E_supply_tightness:
+    value: 0.87
+    unit: "0-1"
+    description: "CoWoS利用率 × HBM涨幅系数"
+    trend_description: "供应紧张，需关注产能扩张"

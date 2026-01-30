@@ -14,6 +14,8 @@ from .minimax_spider import MiniMaxSpider
 from .aws_spider import AWSSpider
 from .azure_spider import AzureSpider
 from .gcp_spider import GCPSpider
+# 新增：E板块 供应链
+from .trendforce_spider import TrendForceSpider
 
 __all__ = [
     "BaseSpider",
@@ -27,6 +29,7 @@ __all__ = [
     "AWSSpider",
     "AzureSpider",
     "GCPSpider",
+    "TrendForceSpider",
 ]
 
 # 爬虫注册表
@@ -42,6 +45,8 @@ SPIDER_REGISTRY = {
     "aws": AWSSpider,
     "azure": AzureSpider,
     "gcp": GCPSpider,
+    # E板块：供应链
+    "trendforce": TrendForceSpider,
 }
 
 

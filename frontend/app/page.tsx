@@ -5,6 +5,7 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SignalFeed } from "@/components/dashboard/SignalFeed";
 import { PriceSummary } from "@/components/dashboard/PriceSummary";
 import { SupplyChainAlert } from "@/components/dashboard/SupplyChainAlert";
+import { AIFinancialsCard } from "@/components/dashboard/AIFinancialsCard";
 import { useSummary } from "@/lib/api-hooks";
 import { RefreshCw } from "lucide-react";
 
@@ -53,8 +54,8 @@ export default function DashboardPage() {
             {/* Stage gauge - takes 2 columns */}
             <div className="lg:col-span-2">
               <StageGauge
-                stage={summary?.stage?.current || "S1"}
-                confidence={summary?.stage?.confidence || "MEDIUM"}
+                stage={(summary?.stage?.current || "S1") as "S0" | "S1" | "S2" | "S3"}
+                confidence={(summary?.stage?.confidence || "MEDIUM") as "HIGH" | "MEDIUM" | "LOW"}
                 rationale={summary?.stage?.description || "加载中..."}
               />
             </div>
@@ -109,10 +110,13 @@ export default function DashboardPage() {
           {/* Supply chain alert */}
           <SupplyChainAlert />
 
-          {/* Price summary and signals */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Price summary, financials, and signals */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Price summary */}
             <PriceSummary />
+
+            {/* AI Financials */}
+            <AIFinancialsCard />
 
             {/* Recent signals */}
             <SignalFeed />

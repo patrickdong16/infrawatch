@@ -11,13 +11,17 @@ export interface PriceRecord {
     provider: string;
     model?: string;
     sku_id?: string;
+    // API 原始字段
+    price?: number;
+    price_type?: "input" | "output" | "hourly";
+    // 转换后的字段
     input_price?: number;
     output_price?: number;
     hourly_rate?: number;
     unit: string;
-    weekOverWeek?: number;
-    monthOverMonth?: number;
-    yearOverYear?: number;
+    weekOverWeek?: number | null;
+    monthOverMonth?: number | null;
+    yearOverYear?: number | null;
 }
 
 // 指标数据

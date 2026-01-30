@@ -93,7 +93,18 @@ const STATUS_STYLES = {
   },
 };
 
-function TrendBadge({ value, label }: { value: number; label: string }) {
+function TrendBadge({ value, label }: { value: number | null | undefined; label: string }) {
+  // 处理 null/undefined 值 (产品上市时间不足时 API 返回 null)
+  if (value === null || value === undefined) {
+    return (
+      <div className="flex items-center gap-0.5 text-xs font-medium px-1.5 py-0.5 rounded text-gray-400 bg-gray-50">
+        <Minus className="w-3 h-3" />
+        <span>--</span>
+        <span className="text-gray-400 ml-0.5">{label}</span>
+      </div>
+    );
+  }
+
   const isPositive = value > 0;
   const isNegative = value < 0;
 

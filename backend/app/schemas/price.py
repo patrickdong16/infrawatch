@@ -113,6 +113,7 @@ class DerivedIndexResponse(BaseModel):
     calculated_at: datetime
     changes: Optional[PriceChange] = None
     description: Optional[str] = None
+    trend_description: Optional[str] = None  # 趋势描述，如"自2025年中开始持续上涨"
     
     model_config = ConfigDict(from_attributes=True)
 

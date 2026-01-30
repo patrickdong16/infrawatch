@@ -8,6 +8,8 @@ from app.api.v1.stage import router as stage_router
 from app.api.v1.supply_chain import router as supply_chain_router
 from app.api.v1.config import router as config_router
 from app.api.v1.data import router as data_router
+from app.api.v1.price_indices import router as price_indices_router
+from app.api.v1.financials import router as financials_router
 
 router = APIRouter(prefix="/v1")
 
@@ -17,4 +19,6 @@ router.include_router(stage_router)
 router.include_router(supply_chain_router)
 router.include_router(config_router)
 router.include_router(data_router)
+router.include_router(price_indices_router)
+router.include_router(financials_router)
 

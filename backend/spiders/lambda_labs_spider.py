@@ -71,46 +71,116 @@ class LambdaLabsSpider(APISpider):
     
     def _get_fallback_prices(self) -> List[Dict[str, Any]]:
         """后备价格数据"""
-        # Lambda Labs 典型价格 (2024年参考)
+        # GPU 发布时间线 (用于准确的趋势计算)
+        # H100: 2022-Q4 发布, 2023 云端广泛可用
+        # H200: 2024-Q2 发布, 2024-Q3 云端可用
+        # B100: 2024-Q3 发布, 2024-Q4 云端可用
+        # B200: 2025-Q1 发布, 2025-Q2 云端可用
+        
         instances = [
-            # H100 实例
+            # === B200 (Blackwell) - 2025 新品 ===
+            {
+                "sku_id": "gpu_1x_b200",
+                "price": 4.99,
+                "specs": {"gpus": 1, "gpu_type": "B200", "vram_gb": 192},
+                "release_date": "2025-03-01",  # 2025 Q1
+                "available_since": "2025-06-01",  # 云端可用
+            },
+            {
+                "sku_id": "gpu_8x_b200",
+                "price": 39.92,
+                "specs": {"gpus": 8, "gpu_type": "B200", "vram_gb": 192},
+                "release_date": "2025-03-01",
+                "available_since": "2025-06-01",
+            },
+            # === B100 (Blackwell) - 2024 Q4 ===
+            {
+                "sku_id": "gpu_1x_b100",
+                "price": 3.99,
+                "specs": {"gpus": 1, "gpu_type": "B100", "vram_gb": 192},
+                "release_date": "2024-09-01",
+                "available_since": "2024-12-01",
+            },
+            {
+                "sku_id": "gpu_8x_b100",
+                "price": 31.92,
+                "specs": {"gpus": 8, "gpu_type": "B100", "vram_gb": 192},
+                "release_date": "2024-09-01",
+                "available_since": "2024-12-01",
+            },
+            # === H200 - 2024 Q2 ===
+            {
+                "sku_id": "gpu_1x_h200",
+                "price": 3.49,
+                "specs": {"gpus": 1, "gpu_type": "H200 SXM", "vram_gb": 141},
+                "release_date": "2024-03-01",
+                "available_since": "2024-06-01",
+            },
+            {
+                "sku_id": "gpu_8x_h200",
+                "price": 27.92,
+                "specs": {"gpus": 8, "gpu_type": "H200 SXM", "vram_gb": 141},
+                "release_date": "2024-03-01",
+                "available_since": "2024-06-01",
+            },
+            # === H100 (主流 benchmark) - 2022 Q4 ===
             {
                 "sku_id": "gpu_1x_h100_pcie",
                 "price": 2.49,
-                "specs": {"gpus": 1, "gpu_type": "H100 PCIe"},
+                "specs": {"gpus": 1, "gpu_type": "H100 PCIe", "vram_gb": 80},
+                "release_date": "2022-09-01",
+                "available_since": "2023-01-01",
             },
             {
                 "sku_id": "gpu_8x_h100_sxm5",
                 "price": 23.92,
-                "specs": {"gpus": 8, "gpu_type": "H100 SXM5"},
+                "specs": {"gpus": 8, "gpu_type": "H100 SXM5", "vram_gb": 80},
+                "release_date": "2022-09-01",
+                "available_since": "2023-01-01",
             },
-            # A100 实例
+            # === A100 (上一代主力) ===
             {
                 "sku_id": "gpu_1x_a100_sxm4",
                 "price": 1.29,
-                "specs": {"gpus": 1, "gpu_type": "A100 SXM4 40GB"},
+                "specs": {"gpus": 1, "gpu_type": "A100 SXM4 40GB", "vram_gb": 40},
+                "release_date": "2020-05-01",
+                "available_since": "2020-09-01",
             },
             {
                 "sku_id": "gpu_8x_a100_sxm4",
                 "price": 10.32,
-                "specs": {"gpus": 8, "gpu_type": "A100 SXM4 40GB"},
+                "specs": {"gpus": 8, "gpu_type": "A100 SXM4 40GB", "vram_gb": 40},
+                "release_date": "2020-05-01",
+                "available_since": "2020-09-01",
             },
             {
                 "sku_id": "gpu_1x_a100_sxm4_80gb",
                 "price": 1.89,
-                "specs": {"gpus": 1, "gpu_type": "A100 SXM4 80GB"},
+                "specs": {"gpus": 1, "gpu_type": "A100 SXM4 80GB", "vram_gb": 80},
+                "release_date": "2020-11-01",
+                "available_since": "2021-03-01",
             },
-            # A10 实例
+            # === 中低端 GPU ===
             {
                 "sku_id": "gpu_1x_a10",
                 "price": 0.60,
-                "specs": {"gpus": 1, "gpu_type": "A10"},
+                "specs": {"gpus": 1, "gpu_type": "A10", "vram_gb": 24},
+                "release_date": "2021-04-01",
+                "available_since": "2021-06-01",
             },
-            # RTX 实例
             {
                 "sku_id": "gpu_1x_rtx6000ada",
                 "price": 0.99,
-                "specs": {"gpus": 1, "gpu_type": "RTX 6000 Ada"},
+                "specs": {"gpus": 1, "gpu_type": "RTX 6000 Ada", "vram_gb": 48},
+                "release_date": "2022-12-01",
+                "available_since": "2023-03-01",
+            },
+            {
+                "sku_id": "gpu_1x_l40s",
+                "price": 1.19,
+                "specs": {"gpus": 1, "gpu_type": "L40S", "vram_gb": 48},
+                "release_date": "2023-08-01",
+                "available_since": "2023-11-01",
             },
         ]
         
@@ -124,3 +194,4 @@ class LambdaLabsSpider(APISpider):
             }
             for inst in instances
         ]
+

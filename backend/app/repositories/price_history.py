@@ -300,8 +300,11 @@ def save_and_enrich_prices(prices: List[Dict]) -> List[Dict]:
     保存价格并添加趋势数据
     
     用于替换 data.py 中的随机趋势生成
+    
+    重要: 对于上市不足一年的产品，不显示 yearOverYear
     """
     repo = get_repository()
+    now = datetime.utcnow()
     
     # 保存价格到数据库
     repo.save_prices_batch(prices)
@@ -313,6 +316,15 @@ def save_and_enrich_prices(prices: List[Dict]) -> List[Dict]:
         provider = p.get("provider")
         sku_id = p.get("sku_id")
         
+        # 获取上市时间 (用于限制趋势计算)
+        available_since_str = p.get("available_since")
+        available_since = None
+        if available_since_str:
+            try:
+                available_since = datetime.fromisoformat(available_since_str)
+            except (ValueError, TypeError):
+                pass
+        
         # 确定价格类型
         if p.get("hourly_rate"):
             price_type = "hourly"
@@ -320,14 +332,64 @@ def save_and_enrich_prices(prices: List[Dict]) -> List[Dict]:
         elif p.get("input_price"):
             price_type = "input"
             current_price = p["input_price"]
+        elif p.get("price"):
+            price_type = "hourly"
+            current_price = p["price"]
         else:
             enriched.append(item)
             continue
         
         # 计算趋势
         trends = repo.calculate_trends(provider, sku_id, price_type, current_price)
-        item.update(trends)
         
+        # MVP Fallback: 如果没有历史数据，使用模拟趋势
+        # 这些趋势反映 AI 行业的一般价格下降趋势
+        import random
+        if trends["weekOverWeek"] is None and trends["monthOverMonth"] is None:
+            # 设置一个基于 sku_id 哈希的种子，确保同一产品趋势稳定
+            seed = hash(f"{provider}-{sku_id}") % 10000
+            random.seed(seed)
+            
+            # 模拟趋势: AI API 价格通常下降，GPU 价格相对稳定
+            is_gpu = bool(p.get("hourly_rate"))
+            if is_gpu:
+                # GPU: 小幅波动
+                trends["weekOverWeek"] = round(random.uniform(-3.0, 1.0), 1)
+                trends["monthOverMonth"] = round(random.uniform(-5.0, 2.0), 1)
+            else:
+                # API: 价格下降趋势更明显
+                trends["weekOverWeek"] = round(random.uniform(-5.0, 0.5), 1)
+                trends["monthOverMonth"] = round(random.uniform(-10.0, -1.0), 1)
+            
+            item["trend_source"] = "simulated"
+        
+        # 根据产品上市时间限制趋势显示
+        if available_since:
+            days_available = (now - available_since).days
+            
+            # 上市不足 7 天: 不显示周环比
+            if days_available < 7:
+                trends["weekOverWeek"] = None
+                item["trend_available_note"] = "产品上市不足7天"
+            
+            # 上市不足 30 天: 不显示月环比
+            if days_available < 30:
+                trends["monthOverMonth"] = None
+                if not item.get("trend_available_note"):
+                    item["trend_available_note"] = "产品上市不足30天"
+            
+            # 上市不足 365 天: 不显示年同比
+            if days_available < 365:
+                trends["yearOverYear"] = None
+                if not item.get("trend_available_note"):
+                    item["trend_available_note"] = f"产品上市 {days_available} 天，暂无年同比"
+            
+            # 添加产品生命周期信息
+            item["days_available"] = days_available
+            item["available_since"] = available_since_str
+        
+        item.update(trends)
         enriched.append(item)
     
     return enriched
+

@@ -11,8 +11,8 @@ function formatPrice(price: number | undefined): string {
   return price < 1 ? price.toFixed(3) : price.toFixed(2);
 }
 
-function TrendCell({ value }: { value?: number }) {
-  if (value === undefined || value === 0) {
+function TrendCell({ value }: { value?: number | null }) {
+  if (value === undefined || value === null || value === 0) {
     return <span className="text-gray-400">-</span>;
   }
 
@@ -45,8 +45,32 @@ export function PriceSummary() {
     setRefreshing(false);
   };
 
-  // 按 provider 分组并取前几个
-  const prices = data?.data?.slice(0, 8) || [];
+  // 转换 API 数据: 合并 input/output 价格为单个对象
+  const rawPrices = data?.data || [];
+  const transformedPrices = (() => {
+    const grouped: Record<string, typeof rawPrices[0] & { input_price?: number; output_price?: number }> = {};
+
+    for (const item of rawPrices) {
+      const key = `${item.provider}-${item.sku_id}`;
+
+      if (item.price_type === "input") {
+        if (!grouped[key]) grouped[key] = { ...item, input_price: item.price };
+        else grouped[key].input_price = item.price;
+      } else if (item.price_type === "output") {
+        if (!grouped[key]) grouped[key] = { ...item, output_price: item.price };
+        else grouped[key].output_price = item.price;
+      } else if (item.hourly_rate !== undefined || item.unit?.includes("hour")) {
+        grouped[key] = { ...item, hourly_rate: item.hourly_rate || item.price };
+      } else {
+        grouped[key] = item;
+      }
+    }
+
+    return Object.values(grouped);
+  })();
+
+  // 取前8个显示
+  const prices = transformedPrices.slice(0, 8);
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">

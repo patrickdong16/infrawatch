@@ -151,6 +151,33 @@ D板块 (巨头财务健康度)
 | **P6 供应链监测中心** | P1 | E板块HBM/DRAM/GPU ASP追踪 |
 | **P7 数据导出** | P2 | CSV/图表导出 |
 
+### 4.3 Phase 3 (v1.1 新增功能)
+
+| 模块 | 优先级 | 功能描述 | 状态 |
+|------|--------|----------|------|
+| **P8 厂商价格指数** | P1 | 各厂商加权平均价格对比，36.5x 差距横幅 | ✅ 已实现 |
+| **P9 AI巨头财务指标** | P1 | EODHD数据源，收入/CapEx增速对比图表 | ✅ 已实现 |
+| **P10 价格趋势显示** | P1 | 周环比/月环比趋势列，fallback模拟趋势 | ✅ 已实现 |
+
+#### P8 厂商价格指数详情
+
+- **展示位置**: 价格监测页面顶部
+- **数据来源**: B板块价格数据
+- **计算逻辑**: 按旗舰(1.0)、中端(0.5)、经济(0.3)加权平均
+- **厂商对比**: 显示最高价厂商与最低价厂商的倍数关系
+- **趋势显示**: 月环比变化
+
+#### P9 AI巨头财务指标详情
+
+- **展示位置**: Dashboard 三栏布局中间
+- **数据来源**: EODHD API (通过 MCP)
+- **监控公司**: MSFT, GOOGL, AMZN, META, NVDA, TSLA
+- **核心指标**:
+  - 季度收入及 QoQ 增速
+  - CapEx (资本支出) 及 QoQ 增速
+  - CapEx/收入比率
+- **可视化**: 收入增速 vs CapEx增速双曲线图 (Recharts)
+
 ---
 
 ## 五、技术规格
@@ -215,10 +242,15 @@ infrawatch/
 | 价格 | GET | `/api/v1/prices/latest` | 获取最新价格 |
 | 价格 | GET | `/api/v1/prices/history` | 获取历史价格 |
 | 价格 | GET | `/api/v1/prices/indices` | 获取派生指数 |
+| 价格 | GET | `/api/v1/prices/provider-indices` | **[新增]** 厂商价格指数对比 |
 | 信号 | GET | `/api/v1/signals` | 获取信号列表 |
 | 信号 | PATCH | `/api/v1/signals/{id}/read` | 标记已读 |
 | 阶段 | GET | `/api/v1/stage/current` | 获取当前阶段 |
 | 供应链 | GET | `/api/v1/supply-chain/latest` | 供应链价格 |
+| 供应链 | GET | `/api/v1/supply-chain/indices` | 供应链价格指数 |
+| 供应链 | GET | `/api/v1/supply-chain/config-history` | 历史价格配置 |
+| 财务 | GET | `/api/v1/financials/ai-metrics` | **[新增]** AI巨头财务指标 |
+| 财务 | GET | `/api/v1/financials/growth-comparison` | **[新增]** 收入/CapEx增速对比 |
 
 ---
 
@@ -293,3 +325,4 @@ infrawatch/
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|
 | v1.0 | 2026-01-29 | 初始版本，基于PRD/TDD整合 |
+| v1.1 | 2026-01-30 | 新增 Phase 3: 厂商价格指数、EODHD财务集成、价格趋势显示 |
